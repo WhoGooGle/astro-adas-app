@@ -30,6 +30,17 @@
     .tag { font-size: 12px; padding: 6px 10px; background: #fff; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); }
   </style>
 </head>
+  <script>
+  const staffLink = document.getElementById("staffLink");
+  if (staffLink) {
+    staffLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      const pin = prompt("Enter staff PIN:");
+      if (pin === "1122") window.location.href = "tech-mode.html";
+      else alert("Incorrect PIN.");
+    });
+  }
+</script>
 <body>
   <header>
     <div class="topbar">
@@ -41,7 +52,9 @@
       <div class="tag">Trusted Precision • Midrand</div>
     </div>
   </header>
-
+<p class="note" style="text-align:center;margin-top:14px;">
+  <a href="#" id="staffLink" style="text-decoration:none;opacity:.7;">Staff access</a>
+</p>
   <main>
     <div class="card">
       <div class="grid">
