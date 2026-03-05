@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADAS Calibration Check</title>
+
+<style>
+body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+header{background:#111;color:#fff;padding:18px}
+header a{color:#fff;text-decoration:none;font-weight:bold}
+main{max-width:900px;margin:auto;padding:16px}
+.card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.row{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:700px){.row{grid-template-columns:1fr 1fr}}
+label{display:block;padding:12px;border:1px solid rgba(0,0,0,.12);border-radius:12px;background:#fff}
+label input{margin-right:8px}
+button{width:100%;padding:12px;border-radius:12px;border:none;background:#0b5cff;color:#fff;font-weight:bold;cursor:pointer}
+.badge{display:inline-block;padding:8px 10px;border-radius:999px;font-size:12px;font-weight:bold}
+.badge.red{background:#ffe5e5;color:#a40000}
+.badge.orange{background:#fff0d6;color:#8a4b00}
+.badge.green{background:#e8ffe8;color:#106b10}
+.note{font-size:13px;opacity:.85;line-height:1.35}
+.cta{display:inline-block;padding:12px 14px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold}
+</style>
+</head>
+
+<body>
+<header>
+  <a href="index.html">← Back</a>
+  <h2>ADAS Calibration Decision Tool</h2>
+</header>
+
+<main>
+
+<div class="card">
+  <p><b>Answer the questions below</b> and we’ll tell you if ADAS calibration is required or recommended.</p>
+  <p class="note">Many vehicles won’t show a warning light even when calibration is needed.</p>
+</div>
+
+<div class="card">
+  <h3>What happened to the vehicle?</h3>
+
+  <div class="row">
+    <label><input type="checkbox" id="windscreen"> Windscreen replacement</label>
+    <label><input type="checkbox" id="alignment"> Wheel alignment done</label>
+    <label><input type="checkbox" id="suspension"> Suspension repairs / parts replaced</label>
+    <label><input type="checkbox" id="accident"> Accident repairs / bumper repair</label>
+    <label><input type="checkbox" id="radar"> Camera / radar sensor removed or replaced</label>
+    <label><input type="checkbox" id="rideheight"> Ride height changed (springs, shocks, lift/level)</label>
+    <label><input type="checkbox" id="tyresize"> Tyre size changed (profile/diameter change)</label>
+    <label><input type="checkbox" id="sas"> Steering Angle Sensor (SAS) reset/replacement OR steering wheel off-centre / vehicle pulling</label>
+  </div>
+
+  <button id="check" style="margin-top:12px;">Check Calibration Need</button>
+</div>
+
+<div class="card" id="result" style="display:none;">
+  <h3>Result</h3>
+  <p id="status"></p>
+  <p class="note" id="explain"></p>
+  <p class="note"><b>Tip:</b> If any ADAS feature is fitted (lane assist, AEB, adaptive cruise, blind spot), calibration becomes more important after repairs.</p>
+  <a class="cta" id="whats" href="#" target="_blank" rel="noopener">WhatsApp Astro Tyres</a>
+</div>
+
+</main>
+
+<script>
+function get(id){ return document.getElementById(id).checked; }
+
+document.getElementById("check").addEventListener("click", () => {
+  const windscreen = get("windscreen");
+  const accident   = get("accident");
+  const radar      = get("radar");
+
+  const alignment  = get("alignment");
+  const suspension = get("suspension");
+  const rideheight = get("rideheight");
+
+  const sas        = get("sas");
+  const tyresize   = get("tyresize");
+
+  let score = 0;
+
+  // Strong triggers
+  if (windscreen) score += 4;
+  if (accident)   score += 4;
+  if (radar)      score += 4;
+
+  // Medium triggers
+  if (alignment)  score += 2;
+  if (suspension) score += 2;
+  if (rideheight) score += 2;
+
+  // Supporting triggers
+  if (sas)        score += 2;
+  if (tyresize)   score += 1;
+
+  let badge = "";
+  let explain = "";
+  let level = "";
+
+  if (score >= 6) {
+    level = "REQUIRED";
+    badge = '<span class="badge red">⚠ Calibration REQUIRED</span>';
+    explain = "Based on the work done, ADAS calibration is strongly recommended (often required) to ensure cameras/radar and steering references are correct.";
+  } else if (score >= 3) {
+    level = "RECOMMENDED";
+    badge = '<span class="badge orange">Calibration RECOMMENDED</span>';
+    explain = "There is a good chance calibration is needed. It’s best to verify with a diagnostic scan and manufacturer procedure.";
+  } else if (score >= 1) {
+    level = "CHECK";
+    badge = '<span class="badge green">Quick Check Recommended</span>';
+    explain = "Calibration may not be mandatory, but a quick check/scan is recommended—especially if the vehicle has lane assist, AEB, or adaptive cruise.";
+  } else {
+    level = "NONE";
+    badge = '<span class="badge green">No Trigger Selected</span>';
+    explain = "No calibration trigger selected. If you’re experiencing warnings, pulling, or steering off-centre, book a check.";
+  }
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("status").innerHTML = badge;
+
+  document.getElementById("explain").textContent = explain;
+
+  // WhatsApp message
+  const selected = [];
+  if (windscreen) selected.push("Windscreen replacement");
+  if (alignment) selected.push("Wheel alignment");
+  if (suspension) selected.push("Suspension repairs");
+  if (accident) selected.push("Accident/bumper repair");
+  if (radar) selected.push("Camera/radar removed/replaced");
+  if (rideheight) selected.push("Ride height change");
+  if (tyresize) selected.push("Tyre size change");
+  if (sas) selected.push("SAS reset / steering off-centre / pulling");
+
+  const msg = encodeURIComponent(
+`Hi Astro Tyres 👋
+I used the ADAS Calibration Decision Tool.
+
+Result: ${level}
+Work done: ${selected.length ? selected.join(", ") : "None selected"}
+
+Vehicle: (make/model/year)
+Notes: (warning lights / pulling / steering off-centre)
+
+Please advise if ADAS calibration is required and next available booking.`
+  );
+
+  document.getElementById("whats").href = `https://wa.me/27735541840?text=${msg}`;
+});
+</script>
+
+</body>
+</html>
