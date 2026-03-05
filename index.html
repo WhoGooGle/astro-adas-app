@@ -42,27 +42,19 @@
   }
 </script>
   <script>
+  document.getElementById("staffLink").addEventListener("click", function (e) {
+    e.preventDefault();
 
-document.getElementById("staffLink").addEventListener("click", function(e) {
+    const pin = prompt("Enter Astro Tyres Staff PIN");
 
-e.preventDefault()
-
-const pin = prompt("Enter staff PIN")
-
-if(pin === "1122"){
-
-window.location.href = "tech-mode.html"
-
-}
-
-else{
-
-alert("Incorrect PIN")
-
-}
-
-})
-
+    if (pin === "1122") {
+      // allow access for this browser session
+      sessionStorage.setItem("astro_staff_ok", "1");
+      window.location.href = "tech-mode.html";
+    } else {
+      alert("Incorrect PIN");
+    }
+  });
 </script>
 <body>
   <header>
