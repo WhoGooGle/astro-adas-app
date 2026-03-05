@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vehicle ADAS Checker</title>
+<style>
+  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+  header{background:#111;color:#fff;padding:18px}
+  header a{color:#fff;text-decoration:none;font-weight:bold}
+  main{max-width:900px;margin:auto;padding:16px}
+  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  select,button,input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
+  button{background:#0b5cff;color:#fff;font-weight:bold;border:none;cursor:pointer}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:700px){.row{grid-template-columns:1fr 1fr}}
+  .tag{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
+  .note{font-size:13px;opacity:.85;line-height:1.35}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Back</a>
+  <h2>Vehicle ADAS Checker</h2>
+</header>
+
+<main>
+  <div class="card">
+    <p>Select your <b>brand</b> and <b>model</b> to see typical ADAS features (trim levels differ, but this guides customers).</p>
+    <div class="row">
+      <div>
+        <label><b>Brand</b></label><br>
+        <select id="brand"></select>
+      </div>
+      <div>
+        <label><b>Model</b></label><br>
+        <select id="model"></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="result" style="display:none;">
+    <h3 id="title"></h3>
+    <p class="note" id="disclaimer"></p>
+    <div id="tags"></div>
+    <hr style="border:none;border-top:1px solid rgba(0,0,0,.08);margin:12px 0">
+    <p><b>Calibration commonly needed after:</b></p>
+    <ul>
+      <li>Windscreen replacement</li>
+      <li>Wheel alignment / suspension repairs</li>
+      <li>Bumper/accident repairs</li>
+      <li>Steering repairs or SAS reset</li>
+    </ul>
+    <p class="note">If unsure, message Astro Tyres and include your vehicle + what repair was done.</p>
+    <button id="whats">WhatsApp Astro Tyres</button>
+  </div>
+</main>
+
+<script>
+const data = {
+  "Toyota": {
+    "Corolla Cross": ["Lane Assist", "AEB", "Adaptive Cruise", "Traffic Sign Recognition"],
+    "RAV4": ["Lane Assist", "AEB", "Adaptive Cruise", "Blind Spot", "Traffic Sign Recognition"]
+  },
+  "Volkswagen": {
+    "Tiguan": ["Lane Assist", "AEB", "Adaptive Cruise", "Blind Spot (trim)"],
+    "Golf 8": ["Lane Assist", "AEB", "Adaptive Cruise", "Traffic Sign Recognition"]
+  },
+  "Ford": {
+    "Ranger (Next-Gen)": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "Hyundai": {
+    "Tucson": ["Lane Assist", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "Kia": {
+    "Sportage": ["Lane Assist", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "Nissan": {
+    "X-Trail": ["Lane Assist (trim)", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+
+  /* Chinese brands common in SA */
+  "Haval": {
+    "Jolion": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+    "H6": ["Lane Assist", "AEB", "Adaptive Cruise", "Blind Spot (trim)"]
+  },
+  "GWM": {
+    "P-Series": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)"]
+  },
+  "Chery": {
+    "Tiggo 7 Pro": ["Lane Assist (trim)", "AEB (trim)", "Blind Spot (trim)", "Traffic Sign Recognition (trim)"],
+    "Tiggo 8 Pro": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "Omoda": {
+    "C5": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "Jaecoo": {
+    "J7": ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"]
+  },
+  "BAIC": {
+    "Beijing X55": ["Lane Assist (trim)", "AEB (trim)", "Blind Spot (trim)"]
+  }
+};
+
+const brandSel = document.getElementById("brand");
+const modelSel = document.getElementById("model");
+const result = document.getElementById("result");
+const title = document.getElementById("title");
+const tags = document.getElementById("tags");
+const disclaimer = document.getElementById("disclaimer");
+const whats = document.getElementById("whats");
+
+function fillBrands(){
+  const brands = Object.keys(data).sort();
+  brandSel.innerHTML = brands.map(b => `<option value="${b}">${b}</option>`).join("");
+}
+function fillModels(){
+  const b = brandSel.value;
+  const models = Object.keys(data[b]).sort();
+  modelSel.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join("");
+  show();
+}
+function show(){
+  const b = brandSel.value;
+  const m = modelSel.value;
+  const features = data[b][m];
+  result.style.display = "block";
+  title.textContent = `${b} ${m} — Typical ADAS Features`;
+  disclaimer.textContent = "Note: features vary by trim level and model year. This is an education guide.";
+  tags.innerHTML = features.map(f => `<span class="tag">${f}</span>`).join("");
+  const msg = encodeURIComponent(`Hi Astro Tyres. I have a ${b} ${m}. I want to check if my ADAS needs calibration. Recent work/repair: _____.`);
+  whats.onclick = () => window.open(`https://wa.me/27735541840?text=${msg}`, "_blank");
+}
+
+fillBrands();
+fillModels();
+brandSel.addEventListener("change", fillModels);
+modelSel.addEventListener("change", show);
+</script>
+
+</body>
+</html>
