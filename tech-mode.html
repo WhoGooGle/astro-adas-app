@@ -4,7 +4,273 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Technician Mode | Astro Tyres</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADAS Calibration Report | Technician</title>
 
+<style>
+  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+  header{background:#111;color:#fff;padding:18px}
+  header a{color:#fff;text-decoration:none;font-weight:bold}
+  main{max-width:1000px;margin:auto;padding:16px}
+  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:900px){.row{grid-template-columns:1fr 1fr}}
+  input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
+  textarea{min-height:90px}
+  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
+  .btn2{display:inline-block;padding:10px 12px;border-radius:12px;background:#111;color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
+  .note{font-size:13px;opacity:.85;line-height:1.35}
+  .tag{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
+  hr{border:none;border-top:1px solid rgba(0,0,0,.1);margin:12px 0}
+  /* Print */
+  @media print{
+    body{background:#fff}
+    header,.noPrint{display:none!important}
+    main{max-width:none;padding:0}
+    .card{box-shadow:none;border-radius:0;margin:0}
+    .printCard{border:1px solid #ddd}
+  }
+</style>
+</head>
+
+<body>
+<header>
+  <a href="tech-mode.html">← Back</a>
+  <h2>Technician ADAS Report</h2>
+  <div class="note">Fill in details → Generate report → Print / Save as PDF</div>
+</header>
+
+<main>
+
+<div class="card noPrint">
+  <h3>Report Inputs</h3>
+
+  <div class="row">
+    <div>
+      <label><b>Customer name</b></label>
+      <input id="customer" placeholder="Customer name">
+    </div>
+    <div>
+      <label><b>Customer phone</b></label>
+      <input id="phone" placeholder="e.g. 073 000 0000">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label><b>Vehicle</b></label>
+      <input id="vehicle" placeholder="Make / Model / Year">
+    </div>
+    <div>
+      <label><b>VIN (optional)</b></label>
+      <input id="vin" placeholder="VIN (optional)">
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label><b>Work done / trigger</b></label>
+      <select id="trigger">
+        <option>Windscreen replacement</option>
+        <option>Wheel alignment</option>
+        <option>Suspension repair / ride height change</option>
+        <option>Accident / bumper repair</option>
+        <option>Camera/Radar removed or replaced</option>
+        <option>Steering repair / SAS relearn</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div>
+      <label><b>Inspection outcome</b></label>
+      <select id="outcome">
+        <option>Calibration REQUIRED</option>
+        <option>Calibration RECOMMENDED</option>
+        <option>Calibration not required (no triggers found)</option>
+        <option>Further diagnosis required</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div>
+      <label><b>ADAS systems noted</b> (optional)</label>
+      <input id="systems" placeholder="e.g. Lane Assist, AEB, ACC, Blind Spot">
+    </div>
+    <div>
+      <label><b>SAS / steering notes</b> (optional)</label>
+      <input id="sas" placeholder="e.g. Steering off-centre / SAS offset +3.5°">
+    </div>
+  </div>
+
+  <label><b>Diagnostic scan summary</b></label>
+  <textarea id="scan" placeholder="Codes found / no codes / module notes..."></textarea>
+
+  <label><b>Technician notes</b></label>
+  <textarea id="notes" placeholder="What was observed and what needs to be done next..."></textarea>
+
+  <label><b>Recommendation</b></label>
+  <textarea id="rec" placeholder="Example: Perform static camera calibration + road verification. Recheck SAS at straight ahead."></textarea>
+
+  <div class="row" style="margin-top:10px;">
+    <button class="btn" id="generate">Generate Report</button>
+    <button class="btn2" id="print">Print / Save PDF</button>
+  </div>
+
+  <div class="row" style="margin-top:10px;">
+    <button class="btn" id="whats">WhatsApp Summary (to customer)</button>
+    <button class="btn2" id="clear">Clear Form</button>
+  </div>
+
+  <p class="note">Tip: On desktop, choose “Save as PDF” in the print dialog to store reports.</p>
+</div>
+
+<div class="card printCard" id="report" style="display:none;">
+  <h3>Astro Tyres — ADAS Calibration Inspection Report</h3>
+  <div class="note">Trusted Precision • Midrand</div>
+  <hr>
+
+  <div class="row">
+    <div><b>Customer:</b> <span id="r_customer"></span></div>
+    <div><b>Phone:</b> <span id="r_phone"></span></div>
+  </div>
+
+  <div class="row" style="margin-top:8px;">
+    <div><b>Vehicle:</b> <span id="r_vehicle"></span></div>
+    <div><b>VIN:</b> <span id="r_vin"></span></div>
+  </div>
+
+  <hr>
+
+  <div><b>Work done / trigger:</b> <span id="r_trigger"></span></div>
+  <div style="margin-top:8px;"><b>Outcome:</b> <span id="r_outcome"></span></div>
+
+  <div style="margin-top:10px;">
+    <span class="tag" id="r_systemsTag" style="display:none;"></span>
+    <span class="tag" id="r_sasTag" style="display:none;"></span>
+  </div>
+
+  <hr>
+
+  <div>
+    <b>Diagnostic scan summary</b>
+    <div class="note" id="r_scan" style="margin-top:6px;white-space:pre-wrap;"></div>
+  </div>
+
+  <hr>
+
+  <div>
+    <b>Technician notes</b>
+    <div class="note" id="r_notes" style="margin-top:6px;white-space:pre-wrap;"></div>
+  </div>
+
+  <hr>
+
+  <div>
+    <b>Recommendation</b>
+    <div class="note" id="r_rec" style="margin-top:6px;white-space:pre-wrap;"></div>
+  </div>
+
+  <hr>
+
+  <div class="note">
+    This inspection report is based on vehicle condition at time of inspection. ADAS requirements vary by make/model and OEM procedure.
+  </div>
+
+  <div class="note" style="margin-top:10px;">
+    Generated by Astro Tyres • ADAS Specialists
+  </div>
+</div>
+
+</main>
+
+<script>
+function v(id){ return document.getElementById(id).value.trim(); }
+function set(id, text){ document.getElementById(id).textContent = text || "-"; }
+
+document.getElementById("generate").addEventListener("click", () => {
+  const customer = v("customer");
+  const phone = v("phone");
+  const vehicle = v("vehicle");
+  const vin = v("vin");
+  const trigger = v("trigger");
+  const outcome = v("outcome");
+  const systems = v("systems");
+  const sas = v("sas");
+  const scan = v("scan");
+  const notes = v("notes");
+  const rec = v("rec");
+
+  document.getElementById("report").style.display = "block";
+
+  set("r_customer", customer);
+  set("r_phone", phone);
+  set("r_vehicle", vehicle);
+  set("r_vin", vin);
+  set("r_trigger", trigger);
+  set("r_outcome", outcome);
+
+  const systemsTag = document.getElementById("r_systemsTag");
+  const sasTag = document.getElementById("r_sasTag");
+
+  if (systems) { systemsTag.style.display="inline-block"; systemsTag.textContent = "ADAS: " + systems; }
+  else { systemsTag.style.display="none"; }
+
+  if (sas) { sasTag.style.display="inline-block"; sasTag.textContent = "SAS/Steering: " + sas; }
+  else { sasTag.style.display="none"; }
+
+  document.getElementById("r_scan").textContent = scan || "-";
+  document.getElementById("r_notes").textContent = notes || "-";
+  document.getElementById("r_rec").textContent = rec || "-";
+
+  // Scroll to report
+  document.getElementById("report").scrollIntoView({behavior:"smooth"});
+});
+
+document.getElementById("print").addEventListener("click", () => {
+  window.print();
+});
+
+document.getElementById("whats").addEventListener("click", () => {
+  const customer = v("customer") || "Customer";
+  const vehicle = v("vehicle") || "-";
+  const trigger = v("trigger") || "-";
+  const outcome = v("outcome") || "-";
+  const rec = v("rec") || "-";
+
+  const msg = encodeURIComponent(
+`Hi ${customer} 👋
+
+Astro Tyres ADAS update:
+
+Vehicle: ${vehicle}
+Work done/trigger: ${trigger}
+Outcome: ${outcome}
+
+Recommendation:
+${rec}
+
+Reply here to confirm your booking.`
+  );
+
+  // Open WhatsApp with message (user chooses chat / number)
+  window.open(`https://wa.me/?text=${msg}`, "_blank");
+});
+
+document.getElementById("clear").addEventListener("click", () => {
+  ["customer","phone","vehicle","vin","systems","sas","scan","notes","rec"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("trigger").selectedIndex = 0;
+  document.getElementById("outcome").selectedIndex = 0;
+  document.getElementById("report").style.display = "none";
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+</script>
+
+</body>
+</html>
 <style>
   body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
   header{background:#111;color:#fff;padding:18px}
