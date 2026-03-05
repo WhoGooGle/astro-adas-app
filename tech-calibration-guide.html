@@ -290,6 +290,11 @@ document.getElementById("show").addEventListener("click", () => {
   box.scrollIntoView({behavior:"smooth"});
 });
 </script>
-
+<script>
+  (function () {
+    const ok = sessionStorage.getItem("astro_staff_ok");
+    if (ok !== "1") window.location.href = "index.html";
+  })();
+</script>
 </body>
 </html>
