@@ -15,6 +15,7 @@ self.addEventListener("install", (event) => {
         "/vehicle-checker.html",
         "/lead-form.html",
         "/manifest.json"
+        "/vehicle-adas-database.html",
       ])
     )
   );
