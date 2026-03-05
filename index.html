@@ -41,6 +41,29 @@
     });
   }
 </script>
+  <script>
+
+document.getElementById("staffLink").addEventListener("click", function(e) {
+
+e.preventDefault()
+
+const pin = prompt("Enter staff PIN")
+
+if(pin === "1122"){
+
+window.location.href = "tech-mode.html"
+
+}
+
+else{
+
+alert("Incorrect PIN")
+
+}
+
+})
+
+</script>
 <body>
   <header>
     <div class="topbar">
@@ -134,5 +157,28 @@
       <p class="note">Send your vehicle details + what repair was done (windscreen / alignment / suspension / bumper repair etc.).</p>
     </div>
   </main>
+  <script>
+
+document.getElementById("staffLink").addEventListener("click", function(e) {
+
+e.preventDefault();
+
+const pin = prompt("Enter Astro Tyres Staff PIN");
+
+if(pin === "1122"){
+
+window.location.href = "tech-mode.html";
+
+}
+
+else{
+
+alert("Incorrect PIN");
+
+}
+
+});
+
+</script>
 </body>
 </html>
