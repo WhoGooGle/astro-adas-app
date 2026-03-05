@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calibration Setup Guide | Technician</title>
+<style>
+  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+  header{background:#111;color:#fff;padding:18px}
+  header a{color:#fff;text-decoration:none;font-weight:bold}
+  main{max-width:980px;margin:auto;padding:16px}
+  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:900px){.row{grid-template-columns:1fr 1fr}}
+  select,input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
+  .tag{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
+  .warn{background:#ffe5e5;color:#8a0000;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
+  .ok{background:#e8ffe8;color:#0b5a0b;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
+  details{border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:12px;background:#fff}
+  details summary{cursor:pointer;font-weight:bold}
+  ul{margin:8px 0 0 18px}
+  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
+  .note{font-size:13px;opacity:.85;line-height:1.35}
+  hr{border:none;border-top:1px solid rgba(0,0,0,.1);margin:12px 0}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="tech-mode.html">← Back</a>
+  <h2>ADAS Calibration Setup Guide</h2>
+  <div class="note">Workshop reference • Always follow OEM procedure for final distances/targets</div>
+</header>
+
+<main>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <label><b>Select brand family</b></label>
+      <select id="brand">
+        <option value="generic">Generic (Most vehicles)</option>
+        <option value="vw">VW / Audi</option>
+        <option value="bmw">BMW / Mini</option>
+        <option value="merc">Mercedes-Benz</option>
+        <option value="toyota">Toyota / Lexus</option>
+        <option value="ford">Ford</option>
+        <option value="hyundai">Hyundai / Kia</option>
+        <option value="chinese">Chinese brands (Haval/Chery/Omoda/Jaecoo/GWM)</option>
+      </select>
+    </div>
+    <div>
+      <label><b>Calibration type</b></label>
+      <select id="type">
+        <option value="static">Static (target board in workshop)</option>
+        <option value="dynamic">Dynamic (road drive procedure)</option>
+        <option value="both">Static + Dynamic</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn" id="show" style="width:100%;margin-top:10px;">Show Setup Guide</button>
+
+  <div class="warn" style="margin-top:12px;">
+    Critical: correct tyre pressures + level floor + correct ride height + centred steering BEFORE calibration.
+  </div>
+</div>
+
+<div class="card" id="out" style="display:none;">
+  <h3 id="title"></h3>
+  <div id="tags"></div>
+  <hr>
+  <div id="content"></div>
+</div>
+
+</main>
+
+<script>
+const setup = {
+  generic: {
+    tags:["Level floor","Correct tyre pressure","Centreline alignment","Correct ride height"],
+    content: `
+      <details open>
+        <summary>Before you start (must-do)</summary>
+        <ul>
+          <li>Confirm <b>tyre pressures</b> equal and correct</li>
+          <li>Confirm <b>vehicle ride height</b> is correct (no sag / uneven load)</li>
+          <li>Confirm <b>alignment</b> is within spec (especially toe + thrust angle)</li>
+          <li>Confirm <b>steering wheel centred mechanically</b> (rack centred)</li>
+          <li>Check <b>SAS value</b> near 0° at straight-ahead (relearn if required)</li>
+          <li>Clean camera/radar lenses; ensure correct windscreen spec/bracket</li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>Static calibration bay setup (general)</summary>
+        <ul>
+          <li>Use a <b>flat, level surface</b> with good lighting</li>
+          <li>Vehicle straight on centreline; wheels straight</li>
+          <li>Targets must be positioned <b>square</b> to vehicle centreline</li>
+          <li>Measure distances carefully (OEM distance varies)</li>
+        </ul>
+        <div class="note">Always use OEM distance/height/target type for the exact model.</div>
+      </details>
+
+      <details>
+        <summary>Dynamic calibration (general)</summary>
+        <ul>
+          <li>Follow scanner instructions: speed range, time, lane markings required</li>
+          <li>Clean windscreen/camera area and ensure no obstructions</li>
+          <li>Road test on clear road with good lane markings</li>
+        </ul>
+      </details>
+
+      <div class="ok">Golden rule: If the vehicle had windscreen/bumber/suspension work, verify calibration even if no warning light.</div>
+    `
+  },
+
+  vw: {
+    tags:["Camera behind mirror","Radar in badge/grille","Often static + dynamic"],
+    content: `
+      <details open>
+        <summary>VW / Audi quick notes</summary>
+        <ul>
+          <li>Forward camera usually behind mirror; radar behind badge/grille depending on model</li>
+          <li>After windscreen replacement: verify camera mounting and bracket alignment</li>
+          <li>After bumper work: verify radar bracket alignment and no paint thickness issues near radar</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Common causes of failed calibration</summary>
+        <ul>
+          <li>Vehicle not level / incorrect ride height</li>
+          <li>Steering not centred / SAS offset</li>
+          <li>Targets not square to centreline</li>
+        </ul>
+      </details>
+      <div class="note">Use OEM procedure for target distance and height (varies by model/year).</div>
+    `
+  },
+
+  bmw: {
+    tags:["Precision setup","Often requires road verification","SAS important"],
+    content: `
+      <details open>
+        <summary>BMW / Mini quick notes</summary>
+        <ul>
+          <li>BMW systems are very sensitive to setup accuracy</li>
+          <li>Verify alignment + steering straight-ahead reference before calibrations</li>
+          <li>Dynamic calibration procedures often require clean lane markings</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Don’t skip</summary>
+        <ul>
+          <li>SAS straight-ahead reference</li>
+          <li>Correct tyre sizes and pressures</li>
+          <li>Level surface / correct target heights</li>
+        </ul>
+      </details>
+    `
+  },
+
+  merc: {
+    tags:["Radar alignment critical","Bracket position sensitive","Often static + dynamic"],
+    content: `
+      <details open>
+        <summary>Mercedes-Benz quick notes</summary>
+        <ul>
+          <li>Radar mounting angle/position is critical after bumper repairs</li>
+          <li>Ensure correct radar cover/badge (wrong part can interfere)</li>
+          <li>Camera and radar may both need calibration depending on system</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Calibration fails often when</summary>
+        <ul>
+          <li>Radar bracket is slightly bent</li>
+          <li>Vehicle not level / ride height off</li>
+          <li>Targets not aligned to centreline</li>
+        </ul>
+      </details>
+    `
+  },
+
+  toyota: {
+    tags:["Safety Sense common","Camera + radar","Post-windscreen important"],
+    content: `
+      <details open>
+        <summary>Toyota / Lexus quick notes</summary>
+        <ul>
+          <li>Toyota Safety Sense commonly includes camera + radar</li>
+          <li>After windscreen replacement: check correct windscreen spec and camera bracket</li>
+          <li>After alignment/suspension: verify steering straight-ahead + SAS reference</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Quick checks</summary>
+        <ul>
+          <li>Clean camera area and ensure no tint/film blocks view</li>
+          <li>Confirm radar area not painted/blocked</li>
+        </ul>
+      </details>
+    `
+  },
+
+  ford: {
+    tags:["Trim dependent ADAS","Camera + radar","Dynamic often used"],
+    content: `
+      <details open>
+        <summary>Ford quick notes</summary>
+        <ul>
+          <li>Features vary by trim; confirm ADAS fitted before calibrating</li>
+          <li>After windscreen replacement and bumper repairs, verify camera/radar calibrations</li>
+          <li>Dynamic calibration may need good lane markings and stable speed range</li>
+        </ul>
+      </details>
+    `
+  },
+
+  hyundai: {
+    tags:["Forward camera common","Radar (trim)","Often straightforward"],
+    content: `
+      <details open>
+        <summary>Hyundai / Kia quick notes</summary>
+        <ul>
+          <li>Forward camera typically behind mirror; radar on higher trims</li>
+          <li>After windscreen replacement: verify camera area and correct glass</li>
+          <li>After steering/suspension: verify SAS straight-ahead</li>
+        </ul>
+      </details>
+    `
+  },
+
+  chinese: {
+    tags:["ADAS often standard","Camera + radar common","Post-repair verification key"],
+    content: `
+      <details open>
+        <summary>Chinese brands (Haval/Chery/Omoda/Jaecoo/GWM)</summary>
+        <ul>
+          <li>ADAS is often fitted as standard on many trims</li>
+          <li>After windscreen or bumper repairs, calibration is commonly required</li>
+          <li>After alignment/suspension work: verify SAS and lane assist reference</li>
+        </ul>
+      </details>
+      <details>
+        <summary>Common pitfalls</summary>
+        <ul>
+          <li>Incorrect ride height after suspension work</li>
+          <li>Targets not positioned correctly</li>
+          <li>Skipping road verification on dynamic calibrations</li>
+        </ul>
+      </details>
+    `
+  }
+};
+
+document.getElementById("show").addEventListener("click", () => {
+  const b = document.getElementById("brand").value;
+  const t = document.getElementById("type").value;
+
+  const box = document.getElementById("out");
+  box.style.display = "block";
+
+  const nameMap = {
+    generic:"Generic Setup",
+    vw:"VW / Audi",
+    bmw:"BMW / Mini",
+    merc:"Mercedes-Benz",
+    toyota:"Toyota / Lexus",
+    ford:"Ford",
+    hyundai:"Hyundai / Kia",
+    chinese:"Chinese Brands"
+  };
+
+  document.getElementById("title").textContent =
+    `${nameMap[b]} — ${t.toUpperCase()} calibration`;
+
+  const tags = setup[b].tags.map(x => `<span class="tag">${x}</span>`).join("");
+  document.getElementById("tags").innerHTML = tags;
+
+  // Add type-specific top note
+  let typeNote = "";
+  if (t === "static") typeNote = `<div class="ok">Static focus: target placement accuracy is everything.</div>`;
+  if (t === "dynamic") typeNote = `<div class="ok">Dynamic focus: road conditions + lane markings must be good.</div>`;
+  if (t === "both") typeNote = `<div class="ok">Both: do static first, then dynamic verification if required by scanner/OEM.</div>`;
+
+  document.getElementById("content").innerHTML = typeNote + setup[b].content;
+
+  box.scrollIntoView({behavior:"smooth"});
+});
+</script>
+
+</body>
+</html>
