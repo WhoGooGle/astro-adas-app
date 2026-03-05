@@ -3,67 +3,89 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Astro Tyres ADAS Information Centre</title>
-  <meta name="description" content="Understand ADAS, why calibration matters, and when it’s required." />
+  <title>Astro Tyres ADAS Info App</title>
+  <meta name="description" content="Learn what ADAS is, why calibration matters, and when it’s required." />
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f6f7f9; color: #111; }
     header { padding: 18px 16px; background: #111; color: #fff; }
     header h1 { margin: 0; font-size: 18px; }
-    main { padding: 16px; max-width: 820px; margin: 0 auto; }
-    .card { background: #fff; border-radius: 12px; padding: 14px; margin: 12px 0; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
-    h2 { margin: 0 0 10px; font-size: 16px; }
-    ul { margin: 8px 0 0 18px; }
-    .cta { display: inline-block; padding: 12px 14px; border-radius: 10px; background: #0b5cff; color: #fff; text-decoration: none; font-weight: bold; }
-    .note { font-size: 13px; opacity: .85; margin-top: 10px; }
+    header p { margin: 6px 0 0; font-size: 13px; opacity: .85; }
+    main { padding: 16px; max-width: 900px; margin: 0 auto; }
+    .card { background: #fff; border-radius: 14px; padding: 14px; margin: 12px 0; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 700px) { .grid { grid-template-columns: 1fr 1fr; } }
+    a.tile { display: block; padding: 14px; border-radius: 14px; text-decoration: none; color: #111; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.06); border: 1px solid rgba(0,0,0,.06); }
+    a.tile h2 { margin: 0 0 6px; font-size: 16px; }
+    a.tile p { margin: 0; font-size: 13px; opacity: .85; line-height: 1.35; }
+    .cta { display: inline-block; padding: 12px 14px; border-radius: 12px; background: #0b5cff; color: #fff; text-decoration: none; font-weight: bold; }
+    .note { font-size: 13px; opacity: .85; margin-top: 10px; line-height: 1.35; }
+    .topbar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .tag { font-size: 12px; padding: 6px 10px; background: #fff; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); }
   </style>
 </head>
 <body>
   <header>
-    <h1>Astro Tyres ADAS Information Centre</h1>
+    <div class="topbar">
+      <div>
+        <h1>Astro Tyres ADAS Information App</h1>
+        <p>Simple answers for vehicle owners — what ADAS is, why calibration matters, and when it’s needed.</p>
+      </div>
+      <div class="tag">Trusted Precision • Midrand</div>
+    </div>
   </header>
 
   <main>
     <div class="card">
-      <p>Welcome to the Astro Tyres ADAS information platform.</p>
-      <p>This app helps vehicle owners understand:</p>
-      <ul>
-        <li>What ADAS systems are</li>
-        <li>Why ADAS calibration is important</li>
-        <li>When ADAS calibration is required</li>
-        <li>How sensors and cameras work</li>
-      </ul>
-    </div>
+      <div class="grid">
+        <a class="tile" href="what-is-adas.html">
+          <h2>What is ADAS?</h2>
+          <p>Understand ADAS in plain English and what features your car may have.</p>
+        </a>
 
-    <div class="card">
-      <h2>What is ADAS?</h2>
-      <p><b>ADAS</b> stands for <b>Advanced Driver Assistance Systems</b>.</p>
-      <p>These systems use cameras, radar sensors and electronic steering sensors to help improve vehicle safety.</p>
-      <p><b>Common ADAS features include:</b></p>
-      <ul>
-        <li>Lane Keep Assist</li>
-        <li>Adaptive Cruise Control</li>
-        <li>Automatic Emergency Braking</li>
-        <li>Blind Spot Monitoring</li>
-        <li>Traffic Sign Recognition</li>
-      </ul>
-    </div>
+        <a class="tile" href="why-adas-exists.html">
+          <h2>Why new vehicles have ADAS</h2>
+          <p>Why manufacturers include ADAS and how it improves road safety.</p>
+        </a>
 
-    <div class="card">
-      <h2>When does ADAS need calibration?</h2>
-      <p>Calibration may be required after:</p>
-      <ul>
-        <li>Windscreen replacement</li>
-        <li>Wheel alignment or suspension repairs</li>
-        <li>Accident or bumper repairs</li>
-        <li>Steering adjustments</li>
-        <li>Steering Angle Sensor (SAS) reset or replacement, or if the vehicle is pulling to one side or the steering wheel is not centered after repairs</li>
-      </ul>
-      <p class="note">For professional ADAS calibration contact Astro Tyres.</p>
+        <a class="tile" href="when-calibration-needed.html">
+          <h2>When calibration is needed</h2>
+          <p>Repairs and situations that commonly require ADAS calibration.</p>
+        </a>
+
+        <a class="tile" href="sensor-locations.html">
+          <h2>Where are the sensors?</h2>
+          <p>Visual guide: camera, radar and sensor locations on a vehicle.</p>
+        </a>
+
+        <a class="tile" href="myths-vs-facts.html">
+          <h2>ADAS myths vs facts</h2>
+          <p>Clear up common misunderstandings customers have about ADAS.</p>
+        </a>
+
+        <a class="tile" href="vehicle-brands.html">
+          <h2>Vehicles with ADAS (SA + Chinese brands)</h2>
+          <p>Popular models in SA that often have ADAS features.</p>
+        </a>
+
+        <a class="tile" href="astro-process.html">
+          <h2>Astro Tyres calibration process</h2>
+          <p>What happens during a professional calibration and why it matters.</p>
+        </a>
+
+        <a class="tile" href="quick-check.html">
+          <h2>30-second ADAS check</h2>
+          <p>How to quickly confirm if your vehicle has ADAS.</p>
+        </a>
+      </div>
+
+      <p class="note">
+        Tip: On your phone, tap <b>Share</b> → <b>Add to Home Screen</b> to use this like an app.
+      </p>
     </div>
 
     <div class="card">
       <a class="cta" href="https://wa.me/27735541840" target="_blank" rel="noopener">WhatsApp to Book ADAS Calibration</a>
-      <p class="note">Tip: Save this page to your home screen to use it like an app.</p>
+      <p class="note">Send your vehicle details + what repair was done (windscreen / alignment / suspension / bumper repair etc.).</p>
     </div>
   </main>
 </body>
