@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technician ADAS Diagnostics</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f6f7f9;
+color:#111
+}
+
+header{
+background:#111;
+color:#fff;
+padding:18px
+}
+
+header a{
+color:#fff;
+text-decoration:none;
+font-weight:bold
+}
+
+main{
+max-width:900px;
+margin:auto;
+padding:16px
+}
+
+.card{
+background:#fff;
+padding:16px;
+border-radius:14px;
+margin:12px 0;
+box-shadow:0 2px 10px rgba(0,0,0,.06)
+}
+
+select{
+width:100%;
+padding:12px;
+border-radius:12px;
+border:1px solid rgba(0,0,0,.15);
+font-size:14px
+}
+
+.result{
+background:#eef5ff;
+padding:12px;
+border-radius:10px;
+margin-top:10px
+}
+
+.note{
+font-size:13px;
+opacity:.85
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<a href="tech-mode.html">← Back</a>
+
+<h2>ADAS Technician Diagnostic Tool</h2>
+
+</header>
+
+<main>
+
+<div class="card">
+
+<label><b>Select vehicle symptom</b></label>
+
+<select id="symptom">
+
+<option value="pulling">Vehicle pulling to one side</option>
+
+<option value="steering">Steering wheel off-centre</option>
+
+<option value="lane">Lane assist warning</option>
+
+<option value="adaswarning">ADAS system warning light</option>
+
+<option value="camera">Camera/radar replaced</option>
+
+</select>
+
+<button onclick="diagnose()" style="margin-top:10px;padding:10px 12px;border:none;border-radius:10px;background:#0b5cff;color:#fff;font-weight:bold;">
+Run Diagnostic Guide
+</button>
+
+</div>
+
+<div class="card result" id="result" style="display:none;"></div>
+
+</main>
+
+<script>
+
+function diagnose(){
+
+const symptom = document.getElementById("symptom").value
+
+let result = ""
+
+if(symptom=="pulling"){
+
+result = `
+<h3>Vehicle Pulling Diagnostic</h3>
+
+1️⃣ Check tyre pressures and tyre conicity  
+2️⃣ Swap front tyres left/right to rule out tyre pull  
+3️⃣ Check wheel alignment (toe/camber/caster)  
+4️⃣ Inspect suspension components  
+5️⃣ Verify steering angle sensor value  
+6️⃣ Perform SAS calibration if required
+`
+
+}
+
+if(symptom=="steering"){
+
+result = `
+<h3>Steering Wheel Off-Centre</h3>
+
+1️⃣ Confirm alignment is within specification  
+2️⃣ Ensure steering rack is centred before toe adjustment  
+3️⃣ Check Steering Angle Sensor value (should be near 0°)  
+4️⃣ Perform SAS reset / calibration  
+5️⃣ Road test vehicle
+`
+
+}
+
+if(symptom=="lane"){
+
+result = `
+<h3>Lane Assist Warning</h3>
+
+1️⃣ Inspect windscreen camera area  
+2️⃣ Check windscreen replacement history  
+3️⃣ Scan ADAS module for fault codes  
+4️⃣ Perform camera calibration procedure  
+`
+
+}
+
+if(symptom=="adaswarning"){
+
+result = `
+<h3>ADAS Warning Light</h3>
+
+1️⃣ Perform full diagnostic scan  
+2️⃣ Identify which ADAS module has fault codes  
+3️⃣ Inspect radar/camera mounting  
+4️⃣ Perform calibration procedure
+`
+
+}
+
+if(symptom=="camera"){
+
+result = `
+<h3>Camera or Radar Replaced</h3>
+
+Calibration required in most cases.
+
+1️⃣ Static calibration using target board  
+2️⃣ Dynamic calibration road test  
+3️⃣ Clear diagnostic codes  
+`
+
+}
+
+document.getElementById("result").innerHTML = result
+document.getElementById("result").style.display = "block"
+
+}
+
+</script>
+
+</body>
+
+</html>
