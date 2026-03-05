@@ -39,6 +39,15 @@ button{width:100%;padding:12px;border-radius:12px;border:none;background:#0b5cff
 </div>
 
 <div class="card">
+  <div class="card">
+
+<h3>Vehicle information</h3>
+
+<input id="vehicle" placeholder="Vehicle make / model / year" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);margin-bottom:10px">
+
+<textarea id="notes" placeholder="Warning lights, vehicle pulling, steering wheel off-centre etc." style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15)"></textarea>
+
+</div>
   <h3>What happened to the vehicle?</h3>
 
   <div class="row">
@@ -134,9 +143,22 @@ document.getElementById("check").addEventListener("click", () => {
   if (tyresize) selected.push("Tyre size change");
   if (sas) selected.push("SAS reset / steering off-centre / pulling");
 
-  const msg = encodeURIComponent(
+  const vehicle = document.getElementById("vehicle").value || "-";
+const notes = document.getElementById("notes").value || "-";
+
+const msg = encodeURIComponent(
 `Hi Astro Tyres 👋
-I used the ADAS Calibration Decision Tool.
+ADAS Calibration Request:
+
+Vehicle: ${vehicle}
+
+Result: ${level}
+Work done: ${selected.length ? selected.join(", ") : "None selected"}
+
+Notes: ${notes}
+
+Please advise if ADAS calibration is required and the next available booking.`
+);
 
 Result: ${level}
 Work done: ${selected.length ? selected.join(", ") : "None selected"}
