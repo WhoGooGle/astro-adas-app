@@ -187,7 +187,12 @@ document.getElementById("result").style.display = "block"
 }
 
 </script>
-
+<script>
+  (function () {
+    const ok = sessionStorage.getItem("astro_staff_ok");
+    if (ok !== "1") window.location.href = "index.html";
+  })();
+</script>
 </body>
 
 </html>
