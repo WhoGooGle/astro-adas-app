@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Technician Mode | Astro Tyres</title>
+
+<style>
+  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+  header{background:#111;color:#fff;padding:18px}
+  header a{color:#fff;text-decoration:none;font-weight:bold}
+  main{max-width:980px;margin:auto;padding:16px}
+  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  h2{margin:8px 0 0;font-size:18px}
+  h3{margin:0 0 10px;font-size:16px}
+  .note{font-size:13px;opacity:.85;line-height:1.35}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+  .pill{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
+  .warn{background:#ffe5e5;color:#8a0000;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
+  .ok{background:#e8ffe8;color:#0b5a0b;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
+  details{border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:12px;background:#fff}
+  details summary{cursor:pointer;font-weight:bold}
+  ul{margin:8px 0 0 18px}
+  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold}
+  input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:900px){.row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+
+<body>
+<header>
+  <a href="index.html">← Back</a>
+  <h2>Technician Mode</h2>
+  <div class="note">Internal workshop reference — Astro Tyres ADAS & Steering Diagnostics</div>
+</header>
+
+<main>
+
+<div class="card">
+  <div class="warn">Rule #1: If the vehicle has ADAS, do not “assume it’s fine” after repairs. Verify and calibrate when required.</div>
+  <span class="pill">SAS</span>
+  <span class="pill">Pulling</span>
+  <span class="pill">Off-centre steering</span>
+  <span class="pill">Alignment</span>
+  <span class="pill">ADAS calibration triggers</span>
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>Fast ADAS Calibration Trigger Checklist</h3>
+    <p class="note">If ANY item is “Yes”, calibration is typically required/recommended (OEM dependent).</p>
+    <ul>
+      <li>Windscreen replaced (forward camera area)</li>
+      <li>Bumper/accident repair near radar or front camera</li>
+      <li>Radar/camera removed, replaced or disturbed</li>
+      <li>Wheel alignment performed on ADAS vehicle</li>
+      <li>Suspension repairs / ride height change</li>
+      <li>SAS reset/replacement or steering work done</li>
+      <li>Tyre size change (diameter/profile change)</li>
+    </ul>
+    <p class="note"><b>Tip:</b> no warning light ≠ correct calibration.</p>
+    <a class="btn" href="calibration-check.html">Open Customer Decision Tool</a>
+  </div>
+
+  <div class="card">
+    <h3>Steering Wheel Off-Centre / Pulling After Repairs (SAS focus)</h3>
+    <div class="note">Common after: alignment, suspension, steering rack work, subframe shift, accident repair.</div>
+    <details>
+      <summary>Step-by-step workflow</summary>
+      <ul>
+        <li><b>1) Road test</b> on flat road: confirm pull, drift, steering wheel angle at straight.</li>
+        <li><b>2) Tyres first:</b> pressures equal, tyre condition, swap L/R front if needed to isolate tyre pull.</li>
+        <li><b>3) Alignment check:</b> toe, camber, caster, rear thrust angle. Verify steering wheel centred mechanically.</li>
+        <li><b>4) Steering angle sensor (SAS) values:</b> check live data at straight ahead (should be ~0°).</li>
+        <li><b>5) SAS reset / relearn</b> only after steering wheel is mechanically centred + alignment within spec.</li>
+        <li><b>6) ADAS systems:</b> lane assist / stability systems rely on SAS. Recalibrate/verify as required.</li>
+      </ul>
+    </details>
+    <div class="ok">If wheel is mechanically centred but SAS shows offset: perform SAS calibration/relearn.</div>
+  </div>
+
+</div>
+
+<div class="card">
+  <h3>Quick Diagnostic Logic (Use in the bay)</h3>
+  <details>
+    <summary>Vehicle pulls to one side</summary>
+    <ul>
+      <li>Check tyre pressure + tyre conicity (swap front tyres L/R)</li>
+      <li>Check brake drag (front calipers, rear brakes)</li>
+      <li>Check alignment (toe/camber/caster) + rear thrust angle</li>
+      <li>Check ride height differences (spring sag, uneven load)</li>
+      <li>If ADAS lane keep is fighting steering: verify SAS + camera calibration</li>
+    </ul>
+  </details>
+
+  <details style="margin-top:10px;">
+    <summary>Steering wheel off-centre after alignment</summary>
+    <ul>
+      <li>Alignment may be “in spec” but steering wheel not centred: correct toe split properly</li>
+      <li>Ensure rack centred before toe adjustment</li>
+      <li>Verify SAS straight-ahead value (should be ~0°)</li>
+      <li>Perform SAS relearn if required by vehicle</li>
+    </ul>
+  </details>
+
+  <details style="margin-top:10px;">
+    <summary>ADAS warnings after repairs</summary>
+    <ul>
+      <li>Scan for codes and note which ADAS module is affected</li>
+      <li>Check sensor mounting position/aim (camera/radar/brackets)</li>
+      <li>Confirm windscreens are correct spec (camera bracket/area)</li>
+      <li>Perform calibration procedure (static/dynamic/both)</li>
+      <li>Clear codes and confirm operation with a road verification</li>
+    </ul>
+  </details>
+</div>
+
+<div class="card">
+  <h3>Technician Quick Notes → WhatsApp summary to customer</h3>
+  <p class="note">Use this to generate a professional customer message after inspection.</p>
+
+  <div class="row">
+    <div>
+      <label><b>Vehicle</b></label>
+      <input id="v" placeholder="Make / Model / Year">
+    </div>
+    <div>
+      <label><b>Work done</b></label>
+      <select id="w">
+        <option>Windscreen replacement</option>
+        <option>Wheel alignment</option>
+        <option>Suspension repairs</option>
+        <option>Accident / bumper repair</option>
+        <option>Steering repairs / SAS relearn</option>
+        <option>Other</option>
+      </select>
+    </div>
+  </div>
+
+  <label style="margin-top:10px;"><b>Findings / notes</b></label>
+  <textarea id="n" placeholder="Example: steering wheel off-centre, SAS shows +4.2°, lane assist warning present..."></textarea>
+
+  <button class="btn" id="send" style="border:none;width:100%;margin-top:10px;cursor:pointer;">Create WhatsApp Customer Message</button>
+
+  <p class="note">This opens WhatsApp with a ready message you can send to the client.</p>
+</div>
+
+</main>
+
+<script>
+document.getElementById("send").addEventListener("click", () => {
+  const vehicle = document.getElementById("v").value || "-";
+  const work = document.getElementById("w").value || "-";
+  const notes = document.getElementById("n").value || "-";
+
+  const msg = encodeURIComponent(
+`Hi 👋
+
+Astro Tyres update on your vehicle:
+
+Vehicle: ${vehicle}
+Work done: ${work}
+
+Findings:
+${notes}
+
+Recommendation:
+We advise ADAS verification/calibration where required to ensure safety systems operate correctly.
+
+Astro Tyres • Trusted Precision`
+  );
+
+  // Opens WhatsApp (to customer number you choose in app chat)
+  window.open(`https://wa.me/?text=${msg}`, "_blank");
+});
+</script>
+
+</body>
+</html>
