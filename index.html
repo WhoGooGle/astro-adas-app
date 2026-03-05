@@ -1,258 +1,306 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Astro Tyres ADAS Info App</title>
+  <meta name="description" content="Learn what ADAS is, why calibration matters, and when it is required." />
 
-<title>Astro Tyres ADAS Info App</title>
+  <style>
+    :root{
+      --bg:#f6f7f9;
+      --card:#ffffff;
+      --text:#111;
+      --muted:rgba(0,0,0,.72);
+      --line:rgba(0,0,0,.10);
+      --shadow:0 2px 12px rgba(0,0,0,.06);
+      --radius:16px;
+      --brand:#111;
+      --accent:#0b5cff;
+    }
 
-<meta name="description" content="Learn what ADAS is, why calibration matters and when it is required.">
+    *{box-sizing:border-box}
 
-<style>
+    body{
+      font-family: Arial, sans-serif;
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-body{
-font-family:Arial, sans-serif;
-margin:0;
-background:#f6f7f9;
-color:#111;
-}
+    header{
+      background:var(--brand);
+      color:#fff;
+      padding:16px 14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
 
-header{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:18px 16px;
-background:#111;
-color:#fff;
-}
+    .header-inner{
+      max-width:980px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
 
-header h1{
-margin:0;
-font-size:20px;
-}
+    .title-wrap h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
 
-header p{
-margin:4px 0 0;
-font-size:13px;
-opacity:.85;
-}
+    .title-wrap p{
+      margin:6px 0 0;
+      font-size:13px;
+      opacity:.85;
+      line-height:1.35;
+    }
 
-.logo{
-height:50px;
-}
+    .logo{
+      height:50px;
+      max-width:220px;
+      object-fit:contain;
+    }
 
-main{
-padding:16px;
-max-width:900px;
-margin:auto;
-}
+    main{
+      max-width:980px;
+      margin:0 auto;
+      padding:16px 14px 34px;
+    }
 
-.card{
-background:#fff;
-border-radius:14px;
-padding:16px;
-margin:14px 0;
-box-shadow:0 2px 10px rgba(0,0,0,.06);
-}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      margin:14px 0;
+      box-shadow:var(--shadow);
+    }
 
-.grid{
-display:grid;
-grid-template-columns:1fr;
-gap:10px;
-}
+    .card h2{
+      margin:0 0 10px;
+      font-size:16px;
+    }
 
-@media(min-width:700px){
+    .card p{
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.4;
+    }
 
-.grid{
-grid-template-columns:1fr 1fr;
-}
+    ul{
+      margin:8px 0 0 18px;
+      color:var(--muted);
+      line-height:1.45;
+    }
 
-}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin-top:10px;
+    }
+    @media(min-width:760px){
+      .grid{grid-template-columns:1fr 1fr;}
+    }
 
-.tile{
-display:block;
-padding:14px;
-border-radius:14px;
-text-decoration:none;
-color:#111;
-background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,.06);
-border:1px solid rgba(0,0,0,.08);
-}
+    .tile{
+      display:block;
+      padding:14px;
+      border-radius:var(--radius);
+      text-decoration:none;
+      color:var(--text);
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      transition:transform .05s ease;
+    }
+    .tile:hover{transform:translateY(-1px)}
+    .tile h3{
+      margin:0 0 6px;
+      font-size:15px;
+    }
+    .tile p{
+      margin:0;
+      font-size:13px;
+      opacity:.85;
+      line-height:1.35;
+    }
 
-.tile h2{
-margin:0 0 6px;
-font-size:16px;
-}
+    .cta{
+      display:inline-block;
+      padding:12px 16px;
+      border-radius:12px;
+      background:var(--accent);
+      color:#fff;
+      text-decoration:none;
+      font-weight:bold;
+      border:1px solid rgba(0,0,0,.08);
+    }
 
-.tile p{
-margin:0;
-font-size:13px;
-opacity:.85;
-}
+    .note{
+      font-size:13px;
+      opacity:.85;
+      margin-top:10px;
+      line-height:1.35;
+      color:var(--muted);
+    }
 
-.cta{
-display:inline-block;
-padding:12px 16px;
-border-radius:12px;
-background:#0b5cff;
-color:#fff;
-text-decoration:none;
-font-weight:bold;
-}
+    .staff{
+      text-align:center;
+      margin-top:18px;
+      font-size:12px;
+      opacity:.75;
+    }
+    .staff a{
+      color:rgba(0,0,0,.65);
+      text-decoration:none;
+    }
+    .staff a:hover{
+      text-decoration:underline;
+    }
 
-.note{
-font-size:13px;
-opacity:.85;
-margin-top:8px;
-}
-
-.staff{
-text-align:center;
-margin-top:20px;
-font-size:12px;
-opacity:.6;
-}
-
-</style>
+    .tagline{
+      display:inline-block;
+      margin-top:10px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      font-size:12px;
+      opacity:.95;
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
+  <header>
+    <div class="header-inner">
+      <div class="title-wrap">
+        <h1>Astro Tyres ADAS Information App</h1>
+        <p>Simple answers for vehicle owners — what ADAS is, why calibration matters, and when it’s needed.</p>
+        <span class="tagline">Trusted Precision • Midrand</span>
+      </div>
 
-<div>
-<h1>Astro Tyres ADAS Info App</h1>
-<p>Trusted Precision • Midrand</p>
-</div>
+      <!-- Logo top-right -->
+      <img src="astro-logo.png" class="logo" alt="Astro Tyres Logo" />
+    </div>
+  </header>
 
-<img src="astro-logo.png" class="logo">
+  <main>
 
-</header>
+    <div class="card">
+      <h2>What is ADAS?</h2>
+      <p>
+        <b>ADAS</b> stands for <b>Advanced Driver Assistance Systems</b>.
+        These systems use cameras, radar sensors and electronic steering sensors to help improve vehicle safety.
+      </p>
 
-<main>
+      <p><b>Common ADAS features include:</b></p>
+      <ul>
+        <li>Lane Keep Assist</li>
+        <li>Adaptive Cruise Control</li>
+        <li>Automatic Emergency Braking</li>
+        <li>Blind Spot Monitoring</li>
+        <li>Traffic Sign Recognition</li>
+      </ul>
+    </div>
 
-<div class="card">
+    <div class="card">
+      <h2>When does ADAS need calibration?</h2>
+      <p>Calibration may be required after:</p>
 
-<h2>About ADAS</h2>
+      <ul>
+        <li>Windscreen replacement</li>
+        <li>Wheel alignment or suspension repairs</li>
+        <li>Accident or bumper repairs</li>
+        <li>Steering adjustments</li>
+        <li>
+          Steering Angle Sensor (SAS) reset or replacement, or if the vehicle is pulling to one side
+          or the steering wheel is not centered after repairs
+        </li>
+      </ul>
 
-<p>
-ADAS stands for <b>Advanced Driver Assistance Systems</b>.
-These systems use cameras, radar sensors and steering sensors to improve vehicle safety.
-</p>
+      <p class="note">
+        If you are unsure, Astro Tyres can inspect your vehicle and advise if calibration is required.
+      </p>
+    </div>
 
-<p>Common ADAS features include:</p>
+    <div class="card">
+      <h2>Quick Links</h2>
 
-<ul>
-<li>Lane Keep Assist</li>
-<li>Adaptive Cruise Control</li>
-<li>Automatic Emergency Braking</li>
-<li>Blind Spot Monitoring</li>
-<li>Traffic Sign Recognition</li>
-</ul>
+      <div class="grid">
 
-</div>
+        <a class="tile" href="what-is-adas.html">
+          <h3>What is ADAS?</h3>
+          <p>Understand ADAS in plain English and what features your car may have.</p>
+        </a>
 
-<div class="card">
+        <a class="tile" href="calibration-check.html">
+          <h3>Calibration Check</h3>
+          <p>Answer a few questions to see if calibration is likely required.</p>
+        </a>
 
-<h2>When does ADAS need calibration?</h2>
+        <a class="tile" href="sensor-locations.html">
+          <h3>Sensor Locations</h3>
+          <p>Where cameras and radar sensors are located on most vehicles.</p>
+        </a>
 
-<p>Calibration may be required after:</p>
+        <a class="tile" href="astro-process.html">
+          <h3>Astro Calibration Process</h3>
+          <p>How calibration is performed and why accuracy matters.</p>
+        </a>
 
-<ul>
-<li>Windscreen replacement</li>
-<li>Wheel alignment or suspension repairs</li>
-<li>Accident or bumper repairs</li>
-<li>Steering adjustments</li>
-<li>Steering Angle Sensor (SAS) reset or replacement, or if the vehicle is pulling to one side or the steering wheel is not centered after repairs</li>
-</ul>
+        <!-- ✅ Vehicle ADAS Database (already created in your repo) -->
+        <a class="tile" href="vehicle-brands.html">
+          <h3>Vehicle ADAS Database</h3>
+          <p>Select your vehicle brand to view common ADAS systems and sensor types.</p>
+        </a>
 
-<p class="note">
-For professional ADAS calibration contact Astro Tyres.
-</p>
+        <a class="tile" href="vehicle-checker.html">
+          <h3>Vehicle Checker</h3>
+          <p>Quick vehicle check flow (brand/model) to guide next steps.</p>
+        </a>
 
-</div>
+      </div>
+    </div>
 
-<div class="grid">
+    <div class="card">
+      <a class="cta" href="https://wa.me/27735541840" target="_blank" rel="noopener">
+        WhatsApp to Book ADAS Calibration
+      </a>
 
-<a class="tile" href="what-is-adas.html">
+      <div class="note">
+        Tip: Save this page to your home screen to use it like an app.
+      </div>
+    </div>
 
-<h2>What is ADAS?</h2>
-<p>Understand ADAS in simple terms.</p>
+    <div class="staff">
+      <a href="#" id="staffLink">Staff access</a>
+    </div>
 
-</a>
+  </main>
 
-<a class="tile" href="calibration-check.html">
+  <!-- Staff PIN access (sets session token, tech pages check this token) -->
+  <script>
+    document.getElementById("staffLink").addEventListener("click", function (e) {
+      e.preventDefault();
 
-<h2>Does my car need calibration?</h2>
-<p>Quick ADAS calibration check.</p>
+      const pin = prompt("Enter Astro Tyres Staff PIN");
 
-</a>
-
-<a class="tile" href="sensor-locations.html">
-
-<h2>Sensor Locations</h2>
-<p>Where cameras and radar sensors are located.</p>
-
-</a>
-
-<a class="tile" href="astro-process.html">
-
-<h2>Astro Calibration Process</h2>
-<p>How calibration is performed.</p>
-
-</a>
-
-</div>
-
-<div class="card">
-
-<a class="cta" href="https://wa.me/27735541840" target="_blank">
-
-WhatsApp to Book ADAS Calibration
-
-</a>
-
-<p class="note">
-Tip: Save this page to your home screen to use it like an app.
-</p>
-
-</div>
-
-<div class="staff">
-
-<a href="#" id="staffLink">Staff access</a>
-
-</div>
-
-</main>
-
-<script>
-
-document.getElementById("staffLink").addEventListener("click", function(e){
-
-e.preventDefault();
-
-const pin = prompt("Enter Astro Tyres Staff PIN");
-
-if(pin === "1122"){
-
-sessionStorage.setItem("astro_staff_ok","1");
-
-window.location.href="tech-mode.html";
-
-}
-
-else{
-
-alert("Incorrect PIN");
-
-}
-
-});
-
-</script>
+      if (pin === "1122") {
+        sessionStorage.setItem("astro_staff_ok", "1");
+        window.location.href = "tech-mode.html";
+      } else {
+        alert("Incorrect PIN");
+      }
+    });
+  </script>
 
 </body>
 </html>
