@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vehicle ADAS Database | Astro Tyres</title>
+<style>
+  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
+  header{background:#111;color:#fff;padding:18px}
+  header a{color:#fff;text-decoration:none;font-weight:bold}
+  main{max-width:980px;margin:auto;padding:16px}
+  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .row{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:800px){.row{grid-template-columns:1fr 1fr}}
+  select,input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
+  .tag{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
+  .note{font-size:13px;opacity:.85;line-height:1.35}
+  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold}
+  ul{margin:8px 0 0 18px}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">← Back</a>
+  <h2>Vehicle ADAS Database</h2>
+  <div class="note">Education guide • Features vary by trim/model year • Use as a reference</div>
+</header>
+
+<main>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <label><b>Brand</b></label><br>
+      <select id="brand"></select>
+    </div>
+    <div>
+      <label><b>Model</b></label><br>
+      <select id="model"></select>
+    </div>
+  </div>
+
+  <div style="margin-top:10px;">
+    <label><b>Search (optional)</b></label>
+    <input id="search" placeholder="Type to filter models… (e.g. Hilux, Ranger, H6)">
+  </div>
+</div>
+
+<div class="card" id="out" style="display:none;">
+  <h3 id="title"></h3>
+  <p class="note" id="trimNote"></p>
+
+  <h4>Common ADAS features</h4>
+  <div id="features"></div>
+
+  <h4 style="margin-top:12px;">Typical sensor locations</h4>
+  <div id="sensors"></div>
+
+  <h4 style="margin-top:12px;">Calibration triggers (when to recommend/require)</h4>
+  <ul id="triggers"></ul>
+
+  <div style="margin-top:12px;">
+    <a class="btn" id="whats" href="#" target="_blank" rel="noopener">WhatsApp Astro Tyres</a>
+  </div>
+</div>
+
+</main>
+
+<script>
+/*
+  NOTE:
+  This is an education database. Add/update models anytime.
+  Structure:
+  Brand -> Model -> { features[], sensors[], triggers[] }
+*/
+const DB = {
+  "Toyota": {
+    "Hilux (GD-6)": {
+      features: ["AEB (trim)", "Lane Assist (trim)", "Adaptive Cruise (trim)", "Traffic Sign Recognition (trim)"],
+      sensors: ["Forward camera (windscreen, behind mirror)", "Front radar (grille/badge - trim)", "Wheel speed sensors (ABS)", "Steering Angle Sensor (SAS)"],
+      triggers: ["Windscreen replacement", "Wheel alignment", "Suspension repairs / ride height change", "Accident/bumper repairs", "SAS reset or steering off-centre/pulling"]
+    },
+    "Corolla Cross": {
+      features: ["Lane Keep Assist", "AEB", "Adaptive Cruise", "Traffic Sign Recognition", "Blind Spot (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar (grille/badge)", "Rear camera", "SAS"],
+      triggers: ["Windscreen replacement", "Accident/bumper repairs", "Wheel alignment / suspension work", "SAS relearn after steering work"]
+    },
+    "RAV4": {
+      features: ["Lane Assist", "AEB", "Adaptive Cruise", "Blind Spot (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar", "Rear bumper sensors (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident/bumper repairs", "Wheel alignment / suspension work", "Ride height changes"]
+    }
+  },
+
+  "Volkswagen": {
+    "Golf 7/8": {
+      features: ["Lane Assist (trim)", "AEB", "Adaptive Cruise (trim)", "Traffic Sign Recognition (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar (trim)", "Rear camera (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Front bumper repairs", "Wheel alignment / suspension", "SAS relearn if steering off-centre"]
+    },
+    "Tiguan": {
+      features: ["Lane Assist", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar", "Rear radar (blind spot - trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Radar/camera disturbed"]
+    }
+  },
+
+  "Ford": {
+    "Ranger (Next-Gen)": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar (trim)", "Rear radar (blind spot - trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Bumper/accident repairs", "Wheel alignment / suspension", "Ride height changes"]
+    }
+  },
+
+  "Hyundai": {
+    "Tucson": {
+      features: ["Lane Assist", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "SAS relearn after steering work"]
+    }
+  },
+
+  "Kia": {
+    "Sportage": {
+      features: ["Lane Assist", "AEB", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Ride height changes"]
+    }
+  },
+
+  "Nissan": {
+    "X-Trail": {
+      features: ["AEB", "Lane Assist (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear camera (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "SAS relearn if steering off-centre"]
+    }
+  },
+
+  /* Chinese brands common in SA */
+  "Haval": {
+    "Jolion": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Ride height changes", "SAS reset/relearn"]
+    },
+    "H6": {
+      features: ["Lane Assist", "AEB", "Adaptive Cruise", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Radar/camera disturbed", "SAS reset/relearn"]
+    }
+  },
+
+  "GWM": {
+    "P-Series": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)"],
+      sensors: ["Forward camera (windscreen)", "Front radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Wheel alignment / suspension", "Accident repairs", "Ride height changes", "SAS reset/relearn"]
+    }
+  },
+
+  "Chery": {
+    "Tiggo 7 Pro": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Blind Spot (trim)", "Traffic Sign Recognition (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Radar/camera disturbed"]
+    },
+    "Tiggo 8 Pro": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Ride height changes"]
+    }
+  },
+
+  "Omoda": {
+    "C5": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Radar/camera disturbed"]
+    }
+  },
+
+  "Jaecoo": {
+    "J7": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Adaptive Cruise (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Ride height changes"]
+    }
+  },
+
+  "BAIC": {
+    "Beijing X55": {
+      features: ["Lane Assist (trim)", "AEB (trim)", "Blind Spot (trim)"],
+      sensors: ["Forward camera", "Front radar (trim)", "Rear radar (trim)", "SAS"],
+      triggers: ["Windscreen replacement", "Accident repairs", "Wheel alignment / suspension", "Radar/camera disturbed"]
+    }
+  }
+};
+
+const brandSel = document.getElementById("brand");
+const modelSel = document.getElementById("model");
+const out = document.getElementById("out");
+const title = document.getElementById("title");
+const trimNote = document.getElementById("trimNote");
+const features = document.getElementById("features");
+const sensors = document.getElementById("sensors");
+const triggers = document.getElementById("triggers");
+const search = document.getElementById("search");
+const whats = document.getElementById("whats");
+
+function listBrands(){
+  const brands = Object.keys(DB).sort();
+  brandSel.innerHTML = brands.map(b=>`<option value="${b}">${b}</option>`).join("");
+}
+
+function listModels(){
+  const b = brandSel.value;
+  let models = Object.keys(DB[b]).sort();
+
+  const q = (search.value||"").toLowerCase().trim();
+  if (q) models = models.filter(m => m.toLowerCase().includes(q));
+
+  modelSel.innerHTML = models.map(m=>`<option value="${m}">${m}</option>`).join("");
+  if (models.length) show();
+  else {
+    out.style.display="none";
+  }
+}
+
+function show(){
+  const b = brandSel.value;
+  const m = modelSel.value;
+  const item = DB[b][m];
+
+  out.style.display="block";
+  title.textContent = `${b} ${m}`;
+  trimNote.textContent = "Note: Features vary by trim level and model year. Use as an education guide.";
+
+  features.innerHTML = item.features.map(x=>`<span class="tag">${x}</span>`).join("");
+  sensors.innerHTML = item.sensors.map(x=>`<span class="tag">${x}</span>`).join("");
+
+  triggers.innerHTML = item.triggers.map(x=>`<li>${x}</li>`).join("");
+
+  const msg = encodeURIComponent(
+`Hi Astro Tyres 👋
+I checked the Vehicle ADAS Database.
+
+Vehicle: ${b} ${m}
+Work/repair done: _____
+Notes: _____
+
+Please advise if ADAS calibration is required and next available booking.`
+  );
+  whats.href = `https://wa.me/27735541840?text=${msg}`;
+}
+
+listBrands();
+listModels();
+
+brandSel.addEventListener("change", listModels);
+modelSel.addEventListener("change", show);
+search.addEventListener("input", listModels);
+</script>
+
+</body>
+</html>
