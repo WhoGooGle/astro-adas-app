@@ -1,451 +1,454 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Technician Mode | Astro Tyres</title>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ADAS Calibration Report | Technician</title>
-  <a class="btn" href="tech-report.html">Open Technician Report (Print/PDF)</a>
-<a class="btn" href="tech-calibration-guide.html">Calibration Setup Guide (Targets)</a>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Astro Tyres | Technician Mode</title>
+
 <style>
-  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
-  header{background:#111;color:#fff;padding:18px}
-  header a{color:#fff;text-decoration:none;font-weight:bold}
-  main{max-width:1000px;margin:auto;padding:16px}
-  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-  .row{display:grid;grid-template-columns:1fr;gap:10px}
-  @media(min-width:900px){.row{grid-template-columns:1fr 1fr}}
-  input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
-  textarea{min-height:90px}
-  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
-  .btn2{display:inline-block;padding:10px 12px;border-radius:12px;background:#111;color:#fff;text-decoration:none;font-weight:bold;border:none;cursor:pointer}
-  .note{font-size:13px;opacity:.85;line-height:1.35}
-  .tag{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
-  hr{border:none;border-top:1px solid rgba(0,0,0,.1);margin:12px 0}
-  /* Print */
+  :root{
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --text:#111;
+    --muted:#566;
+    --line:rgba(0,0,0,.12);
+    --shadow:0 2px 14px rgba(0,0,0,.06);
+    --radius:16px;
+
+    --brand:#111111;
+    --accent:#0b5cff;
+    --danger:#e10600;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  /* Top toolbar */
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--brand);
+    color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.12);
+  }
+  .topbar-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:12px 14px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .left-group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .brand{
+    display:flex;
+    flex-direction:column;
+    line-height:1.1;
+  }
+  .brand b{font-size:14px;letter-spacing:.3px}
+  .brand span{font-size:12px;opacity:.85}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:10px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:bold;
+    border:1px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn-light{background:#fff;color:#111;border-color:rgba(0,0,0,.12)}
+  .btn-blue{background:var(--accent);color:#fff}
+  .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.22)}
+  .btn:hover{filter:brightness(.98)}
+  .btn:active{transform:translateY(1px)}
+
+  /* Page container */
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:18px 14px 40px;
+  }
+
+  /* Headline card */
+  .hero{
+    background:linear-gradient(180deg,#111 0%, #111 55%, #1a1a1a 100%);
+    color:#fff;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:var(--shadow);
+    margin:14px 0 18px;
+  }
+  .hero h1{margin:0 0 6px;font-size:22px}
+  .hero p{margin:0;opacity:.9;font-size:13px;line-height:1.35}
+
+  /* Grid layout */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  @media(min-width:980px){
+    .grid{
+      grid-template-columns: 1.2fr .8fr;
+      align-items:start;
+    }
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+  }
+
+  .card h2{
+    margin:0 0 10px;
+    font-size:16px;
+  }
+  .sub{
+    font-size:12px;
+    color:#444;
+    margin:-2px 0 12px;
+    opacity:.9;
+  }
+
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  @media(min-width:760px){
+    .form-grid{
+      grid-template-columns:1fr 1fr;
+    }
+  }
+
+  label{
+    font-weight:bold;
+    font-size:12px;
+    margin-bottom:6px;
+    display:block;
+  }
+  input, select, textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    font-size:14px;
+    background:#fff;
+  }
+  textarea{min-height:110px;resize:vertical}
+
+  .full{grid-column:1/-1}
+
+  .chip{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:999px;
+    background:#f0f2f5;
+    border:1px solid rgba(0,0,0,.08);
+    font-size:12px;
+    margin:4px 6px 0 0;
+  }
+
+  .panel{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:10px;
+  }
+
+  .danger{
+    background:#fff5f5;
+    border:1px solid rgba(225,6,0,.25);
+    border-radius:14px;
+    padding:12px;
+  }
+  .danger b{color:var(--danger)}
+  .note{
+    font-size:12px;
+    opacity:.85;
+    line-height:1.35;
+  }
+
+  .print-area{
+    display:none;
+  }
   @media print{
+    .topbar,.hero,.actions{display:none!important}
     body{background:#fff}
-    header,.noPrint{display:none!important}
-    main{max-width:none;padding:0}
-    .card{box-shadow:none;border-radius:0;margin:0}
-    .printCard{border:1px solid #ddd}
+    .wrap{padding:0}
+    .card{box-shadow:none;border:1px solid #ddd}
+    .print-area{display:block}
   }
 </style>
+
 </head>
-
 <body>
-<header>
-  <a href="tech-mode.html">← Back</a>
-  <h2>Technician ADAS Report</h2>
-  <div class="note">Fill in details → Generate report → Print / Save as PDF</div>
-</header>
 
-<main>
-
-<div class="card noPrint">
-  <h3>Report Inputs</h3>
-
-  <div class="row">
-    <div>
-      <label><b>Customer name</b></label>
-      <input id="customer" placeholder="Customer name">
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="left-group">
+      <a class="btn btn-ghost" href="index.html">← Back</a>
+      <div class="brand">
+        <b>ASTRO TYRES • Technician Mode</b>
+        <span>ADAS Report • Diagnostics • Calibration Reference</span>
+      </div>
     </div>
-    <div>
-      <label><b>Customer phone</b></label>
-      <input id="phone" placeholder="e.g. 073 000 0000">
+
+    <div class="left-group">
+      <a class="btn btn-light" href="tech-diagnostics.html">Diagnostic Tool</a>
+      <a class="btn btn-light" href="tech-calibration-guide.html">Targets Guide</a>
+      <button class="btn btn-blue" id="printBtn" type="button">Print / Save PDF</button>
     </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label><b>Vehicle</b></label>
-      <input id="vehicle" placeholder="Make / Model / Year">
-    </div>
-    <div>
-      <label><b>VIN (optional)</b></label>
-      <input id="vin" placeholder="VIN (optional)">
-    </div>
-  </div>
-
-  <a class="btn" href="tech-diagnostics.html">Technician Diagnostic Tool</a>
-
-  <div class="row">
-    <div>
-      <label><b>Work done / trigger</b></label>
-      <select id="trigger">
-        <option>Windscreen replacement</option>
-        <option>Wheel alignment</option>
-        <option>Suspension repair / ride height change</option>
-        <option>Accident / bumper repair</option>
-        <option>Camera/Radar removed or replaced</option>
-        <option>Steering repair / SAS relearn</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div>
-      <label><b>Inspection outcome</b></label>
-      <select id="outcome">
-        <option>Calibration REQUIRED</option>
-        <option>Calibration RECOMMENDED</option>
-        <option>Calibration not required (no triggers found)</option>
-        <option>Further diagnosis required</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label><b>ADAS systems noted</b> (optional)</label>
-      <input id="systems" placeholder="e.g. Lane Assist, AEB, ACC, Blind Spot">
-    </div>
-    <div>
-      <label><b>SAS / steering notes</b> (optional)</label>
-      <input id="sas" placeholder="e.g. Steering off-centre / SAS offset +3.5°">
-    </div>
-  </div>
-
-  <label><b>Diagnostic scan summary</b></label>
-  <textarea id="scan" placeholder="Codes found / no codes / module notes..."></textarea>
-
-  <label><b>Technician notes</b></label>
-  <textarea id="notes" placeholder="What was observed and what needs to be done next..."></textarea>
-
-  <label><b>Recommendation</b></label>
-  <textarea id="rec" placeholder="Example: Perform static camera calibration + road verification. Recheck SAS at straight ahead."></textarea>
-
-  <div class="row" style="margin-top:10px;">
-    <button class="btn" id="generate">Generate Report</button>
-    <button class="btn2" id="print">Print / Save PDF</button>
-  </div>
-
-  <div class="row" style="margin-top:10px;">
-    <button class="btn" id="whats">WhatsApp Summary (to customer)</button>
-    <button class="btn2" id="clear">Clear Form</button>
-  </div>
-
-  <p class="note">Tip: On desktop, choose “Save as PDF” in the print dialog to store reports.</p>
-</div>
-
-<div class="card printCard" id="report" style="display:none;">
-  <h3>Astro Tyres — ADAS Calibration Inspection Report</h3>
-  <div class="note">Trusted Precision • Midrand</div>
-  <hr>
-
-  <div class="row">
-    <div><b>Customer:</b> <span id="r_customer"></span></div>
-    <div><b>Phone:</b> <span id="r_phone"></span></div>
-  </div>
-
-  <div class="row" style="margin-top:8px;">
-    <div><b>Vehicle:</b> <span id="r_vehicle"></span></div>
-    <div><b>VIN:</b> <span id="r_vin"></span></div>
-  </div>
-
-  <hr>
-
-  <div><b>Work done / trigger:</b> <span id="r_trigger"></span></div>
-  <div style="margin-top:8px;"><b>Outcome:</b> <span id="r_outcome"></span></div>
-
-  <div style="margin-top:10px;">
-    <span class="tag" id="r_systemsTag" style="display:none;"></span>
-    <span class="tag" id="r_sasTag" style="display:none;"></span>
-  </div>
-
-  <hr>
-
-  <div>
-    <b>Diagnostic scan summary</b>
-    <div class="note" id="r_scan" style="margin-top:6px;white-space:pre-wrap;"></div>
-  </div>
-
-  <hr>
-
-  <div>
-    <b>Technician notes</b>
-    <div class="note" id="r_notes" style="margin-top:6px;white-space:pre-wrap;"></div>
-  </div>
-
-  <hr>
-
-  <div>
-    <b>Recommendation</b>
-    <div class="note" id="r_rec" style="margin-top:6px;white-space:pre-wrap;"></div>
-  </div>
-
-  <hr>
-
-  <div class="note">
-    This inspection report is based on vehicle condition at time of inspection. ADAS requirements vary by make/model and OEM procedure.
-  </div>
-
-  <div class="note" style="margin-top:10px;">
-    Generated by Astro Tyres • ADAS Specialists
   </div>
 </div>
 
-</main>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Technician ADAS Report</h1>
+    <p>Fill in the details → Generate a clear report → Print or Save as PDF for the customer / file.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- LEFT: MAIN FORM -->
+    <div class="card">
+      <h2>Report Inputs</h2>
+      <div class="sub">Complete only what you know. Keep notes short and clear.</div>
+
+      <div class="form-grid">
+        <div>
+          <label>Customer name</label>
+          <input id="custName" placeholder="Customer name">
+        </div>
+
+        <div>
+          <label>Customer phone</label>
+          <input id="custPhone" placeholder="e.g. 073 000 0000">
+        </div>
+
+        <div>
+          <label>Vehicle</label>
+          <input id="vehicle" placeholder="Make / Model / Year">
+        </div>
+
+        <div>
+          <label>VIN (optional)</label>
+          <input id="vin" placeholder="VIN (optional)">
+        </div>
+
+        <div class="full">
+          <label>Work done / trigger</label>
+          <select id="workDone">
+            <option>Windscreen replacement</option>
+            <option>Wheel alignment</option>
+            <option>Suspension repairs</option>
+            <option>Accident / bumper repairs</option>
+            <option>Steering repairs</option>
+            <option>SAS reset / replacement</option>
+            <option>Other (notes below)</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Inspection outcome</label>
+          <select id="outcome">
+            <option>Calibration REQUIRED</option>
+            <option>Calibration RECOMMENDED</option>
+            <option>Not required (no calibration)</option>
+            <option>Further diagnosis needed</option>
+          </select>
+        </div>
+
+        <div>
+          <label>ADAS systems noted (optional)</label>
+          <input id="adasSystems" placeholder="e.g. Lane Assist, AEB, ACC, Blind Spot">
+        </div>
+
+        <div class="full">
+          <label>SAS / steering notes (optional)</label>
+          <input id="sasNotes" placeholder="e.g. Steering off-centre / SAS offset +3.5° / pulling">
+        </div>
+
+        <div class="full">
+          <label>Diagnostic scan summary</label>
+          <textarea id="scanSummary" placeholder="Codes found / no codes / module notes…"></textarea>
+        </div>
+
+        <div class="full">
+          <label>Technician notes</label>
+          <textarea id="techNotes" placeholder="What was observed and what needs to be done next…"></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-blue" type="button" id="genBtn">Generate Report</button>
+        <a class="btn btn-light" id="waBtn" href="#" target="_blank" rel="noopener">Send to WhatsApp</a>
+      </div>
+
+      <div class="note" style="margin-top:10px;">
+        Tip: For WhatsApp, the app creates a clean message your admin can forward to the customer.
+      </div>
+    </div>
+
+    <!-- RIGHT: OUTPUT + QUICK RULES -->
+    <div class="panel">
+
+      <div class="card">
+        <h2>Generated Report</h2>
+        <div class="sub">This is what gets printed / saved.</div>
+
+        <div id="reportBox" class="danger">
+          <b>Not generated yet.</b>
+          <div class="note">Fill the form and click “Generate Report”.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Quick Rules</h2>
+        <span class="chip">Tyre pressures</span>
+        <span class="chip">Level floor</span>
+        <span class="chip">Correct ride height</span>
+        <span class="chip">Steering centred</span>
+        <span class="chip">SAS near 0°</span>
+
+        <div class="note" style="margin-top:10px;">
+          If windscreen / bumper / suspension work was done, verify calibration even if there is no warning light.
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PRINT AREA (optional, uses same reportBox content) -->
+  <div class="print-area" id="printArea"></div>
+
+</div>
 
 <script>
-function v(id){ return document.getElementById(id).value.trim(); }
-function set(id, text){ document.getElementById(id).textContent = text || "-"; }
+  const waNumber = "27735541840";
 
-document.getElementById("generate").addEventListener("click", () => {
-  const customer = v("customer");
-  const phone = v("phone");
-  const vehicle = v("vehicle");
-  const vin = v("vin");
-  const trigger = v("trigger");
-  const outcome = v("outcome");
-  const systems = v("systems");
-  const sas = v("sas");
-  const scan = v("scan");
-  const notes = v("notes");
-  const rec = v("rec");
+  function escapeHtml(str){
+    return (str||"").replace(/[&<>"']/g, m => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[m]));
+  }
 
-  document.getElementById("report").style.display = "block";
+  function generate(){
+    const data = {
+      name: document.getElementById("custName").value.trim(),
+      phone: document.getElementById("custPhone").value.trim(),
+      vehicle: document.getElementById("vehicle").value.trim(),
+      vin: document.getElementById("vin").value.trim(),
+      work: document.getElementById("workDone").value,
+      outcome: document.getElementById("outcome").value,
+      adas: document.getElementById("adasSystems").value.trim(),
+      sas: document.getElementById("sasNotes").value.trim(),
+      scan: document.getElementById("scanSummary").value.trim(),
+      notes: document.getElementById("techNotes").value.trim(),
+      date: new Date().toLocaleString()
+    };
 
-  set("r_customer", customer);
-  set("r_phone", phone);
-  set("r_vehicle", vehicle);
-  set("r_vin", vin);
-  set("r_trigger", trigger);
-  set("r_outcome", outcome);
+    const html = `
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+        <div>
+          <div style="font-weight:bold;font-size:15px;">Astro Tyres ADAS Technician Report</div>
+          <div style="font-size:12px;opacity:.85;">Generated: ${escapeHtml(data.date)}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:bold;">Result: <span style="color:#e10600">${escapeHtml(data.outcome)}</span></div>
+          <div style="font-size:12px;opacity:.85;">Work done: ${escapeHtml(data.work)}</div>
+        </div>
+      </div>
 
-  const systemsTag = document.getElementById("r_systemsTag");
-  const sasTag = document.getElementById("r_sasTag");
+      <hr style="border:none;border-top:1px solid rgba(0,0,0,.12);margin:12px 0;">
 
-  if (systems) { systemsTag.style.display="inline-block"; systemsTag.textContent = "ADAS: " + systems; }
-  else { systemsTag.style.display="none"; }
+      <div style="font-size:13px;line-height:1.4;">
+        <b>Customer:</b> ${escapeHtml(data.name || "—")}<br>
+        <b>Phone:</b> ${escapeHtml(data.phone || "—")}<br>
+        <b>Vehicle:</b> ${escapeHtml(data.vehicle || "—")}<br>
+        <b>VIN:</b> ${escapeHtml(data.vin || "—")}<br>
+        <b>ADAS systems:</b> ${escapeHtml(data.adas || "—")}<br>
+        <b>SAS / steering notes:</b> ${escapeHtml(data.sas || "—")}<br><br>
 
-  if (sas) { sasTag.style.display="inline-block"; sasTag.textContent = "SAS/Steering: " + sas; }
-  else { sasTag.style.display="none"; }
+        <b>Diagnostic scan summary:</b><br>
+        <div style="white-space:pre-wrap;margin-top:6px;">${escapeHtml(data.scan || "—")}</div><br>
 
-  document.getElementById("r_scan").textContent = scan || "-";
-  document.getElementById("r_notes").textContent = notes || "-";
-  document.getElementById("r_rec").textContent = rec || "-";
+        <b>Technician notes:</b><br>
+        <div style="white-space:pre-wrap;margin-top:6px;">${escapeHtml(data.notes || "—")}</div>
+      </div>
 
-  // Scroll to report
-  document.getElementById("report").scrollIntoView({behavior:"smooth"});
-});
+      <div class="note" style="margin-top:10px;">
+        Calibration requirements vary by vehicle and OEM procedure. This report is for workshop and customer reference.
+      </div>
+    `;
 
-document.getElementById("print").addEventListener("click", () => {
-  window.print();
-});
+    const box = document.getElementById("reportBox");
+    box.className = "card"; // remove red warning styling
+    box.style.border = "1px solid rgba(0,0,0,.12)";
+    box.style.background = "#fff";
+    box.innerHTML = html;
 
-document.getElementById("whats").addEventListener("click", () => {
-  const customer = v("customer") || "Customer";
-  const vehicle = v("vehicle") || "-";
-  const trigger = v("trigger") || "-";
-  const outcome = v("outcome") || "-";
-  const rec = v("rec") || "-";
+    // Print area mirrors report
+    document.getElementById("printArea").innerHTML = box.innerHTML;
 
-  const msg = encodeURIComponent(
-`Hi ${customer} 👋
+    // WhatsApp message
+    const msg =
+`Hi Astro Tyres 👋
+ADAS Technician Report
 
-Astro Tyres ADAS update:
+Result: ${data.outcome}
+Work done: ${data.work}
 
-Vehicle: ${vehicle}
-Work done/trigger: ${trigger}
-Outcome: ${outcome}
+Customer: ${data.name || "-"}
+Phone: ${data.phone || "-"}
+Vehicle: ${data.vehicle || "-"}
+VIN: ${data.vin || "-"}
 
-Recommendation:
-${rec}
+ADAS systems: ${data.adas || "-"}
+SAS/steering: ${data.sas || "-"}
 
-Reply here to confirm your booking.`
-  );
+Scan summary:
+${data.scan || "-"}
 
-  // Open WhatsApp with message (user chooses chat / number)
-  window.open(`https://wa.me/?text=${msg}`, "_blank");
-});
+Technician notes:
+${data.notes || "-"}
 
-document.getElementById("clear").addEventListener("click", () => {
-  ["customer","phone","vehicle","vin","systems","sas","scan","notes","rec"].forEach(id => document.getElementById(id).value = "");
-  document.getElementById("trigger").selectedIndex = 0;
-  document.getElementById("outcome").selectedIndex = 0;
-  document.getElementById("report").style.display = "none";
-  window.scrollTo({top:0, behavior:"smooth"});
-});
-</script>
+Generated: ${data.date}`;
 
-</body>
-</html>
-<style>
-  body{font-family:Arial;margin:0;background:#f6f7f9;color:#111}
-  header{background:#111;color:#fff;padding:18px}
-  header a{color:#fff;text-decoration:none;font-weight:bold}
-  main{max-width:980px;margin:auto;padding:16px}
-  .card{background:#fff;padding:16px;border-radius:14px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-  h2{margin:8px 0 0;font-size:18px}
-  h3{margin:0 0 10px;font-size:16px}
-  .note{font-size:13px;opacity:.85;line-height:1.35}
-  .grid{display:grid;grid-template-columns:1fr;gap:10px}
-  @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
-  .pill{display:inline-block;background:#f0f2f5;border-radius:999px;padding:6px 10px;font-size:12px;margin:4px 6px 0 0}
-  .warn{background:#ffe5e5;color:#8a0000;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
-  .ok{background:#e8ffe8;color:#0b5a0b;border-radius:12px;padding:10px;margin:10px 0;font-weight:bold}
-  details{border:1px solid rgba(0,0,0,.1);border-radius:12px;padding:12px;background:#fff}
-  details summary{cursor:pointer;font-weight:bold}
-  ul{margin:8px 0 0 18px}
-  .btn{display:inline-block;padding:10px 12px;border-radius:12px;background:#0b5cff;color:#fff;text-decoration:none;font-weight:bold}
-  input,textarea,select{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.15);font-size:14px}
-  .row{display:grid;grid-template-columns:1fr;gap:10px}
-  @media(min-width:900px){.row{grid-template-columns:1fr 1fr}}
-</style>
-</head>
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+    document.getElementById("waBtn").href = waUrl;
+  }
 
-<body>
-<header>
-  <a href="index.html">← Back</a>
-  <h2>Technician Mode</h2>
-  <div class="note">Internal workshop reference — Astro Tyres ADAS & Steering Diagnostics</div>
-</header>
-
-<main>
-
-<div class="card">
-  <div class="warn">Rule #1: If the vehicle has ADAS, do not “assume it’s fine” after repairs. Verify and calibrate when required.</div>
-  <span class="pill">SAS</span>
-  <span class="pill">Pulling</span>
-  <span class="pill">Off-centre steering</span>
-  <span class="pill">Alignment</span>
-  <span class="pill">ADAS calibration triggers</span>
-</div>
-
-<div class="grid">
-
-  <div class="card">
-    <h3>Fast ADAS Calibration Trigger Checklist</h3>
-    <p class="note">If ANY item is “Yes”, calibration is typically required/recommended (OEM dependent).</p>
-    <ul>
-      <li>Windscreen replaced (forward camera area)</li>
-      <li>Bumper/accident repair near radar or front camera</li>
-      <li>Radar/camera removed, replaced or disturbed</li>
-      <li>Wheel alignment performed on ADAS vehicle</li>
-      <li>Suspension repairs / ride height change</li>
-      <li>SAS reset/replacement or steering work done</li>
-      <li>Tyre size change (diameter/profile change)</li>
-    </ul>
-    <p class="note"><b>Tip:</b> no warning light ≠ correct calibration.</p>
-    <a class="btn" href="calibration-check.html">Open Customer Decision Tool</a>
-  </div>
-
-  <div class="card">
-    <h3>Steering Wheel Off-Centre / Pulling After Repairs (SAS focus)</h3>
-    <div class="note">Common after: alignment, suspension, steering rack work, subframe shift, accident repair.</div>
-    <details>
-      <summary>Step-by-step workflow</summary>
-      <ul>
-        <li><b>1) Road test</b> on flat road: confirm pull, drift, steering wheel angle at straight.</li>
-        <li><b>2) Tyres first:</b> pressures equal, tyre condition, swap L/R front if needed to isolate tyre pull.</li>
-        <li><b>3) Alignment check:</b> toe, camber, caster, rear thrust angle. Verify steering wheel centred mechanically.</li>
-        <li><b>4) Steering angle sensor (SAS) values:</b> check live data at straight ahead (should be ~0°).</li>
-        <li><b>5) SAS reset / relearn</b> only after steering wheel is mechanically centred + alignment within spec.</li>
-        <li><b>6) ADAS systems:</b> lane assist / stability systems rely on SAS. Recalibrate/verify as required.</li>
-      </ul>
-    </details>
-    <div class="ok">If wheel is mechanically centred but SAS shows offset: perform SAS calibration/relearn.</div>
-  </div>
-
-</div>
-
-<div class="card">
-  <h3>Quick Diagnostic Logic (Use in the bay)</h3>
-  <details>
-    <summary>Vehicle pulls to one side</summary>
-    <ul>
-      <li>Check tyre pressure + tyre conicity (swap front tyres L/R)</li>
-      <li>Check brake drag (front calipers, rear brakes)</li>
-      <li>Check alignment (toe/camber/caster) + rear thrust angle</li>
-      <li>Check ride height differences (spring sag, uneven load)</li>
-      <li>If ADAS lane keep is fighting steering: verify SAS + camera calibration</li>
-    </ul>
-  </details>
-
-  <details style="margin-top:10px;">
-    <summary>Steering wheel off-centre after alignment</summary>
-    <ul>
-      <li>Alignment may be “in spec” but steering wheel not centred: correct toe split properly</li>
-      <li>Ensure rack centred before toe adjustment</li>
-      <li>Verify SAS straight-ahead value (should be ~0°)</li>
-      <li>Perform SAS relearn if required by vehicle</li>
-    </ul>
-  </details>
-
-  <details style="margin-top:10px;">
-    <summary>ADAS warnings after repairs</summary>
-    <ul>
-      <li>Scan for codes and note which ADAS module is affected</li>
-      <li>Check sensor mounting position/aim (camera/radar/brackets)</li>
-      <li>Confirm windscreens are correct spec (camera bracket/area)</li>
-      <li>Perform calibration procedure (static/dynamic/both)</li>
-      <li>Clear codes and confirm operation with a road verification</li>
-    </ul>
-  </details>
-</div>
-
-<div class="card">
-  <h3>Technician Quick Notes → WhatsApp summary to customer</h3>
-  <p class="note">Use this to generate a professional customer message after inspection.</p>
-
-  <div class="row">
-    <div>
-      <label><b>Vehicle</b></label>
-      <input id="v" placeholder="Make / Model / Year">
-    </div>
-    <div>
-      <label><b>Work done</b></label>
-      <select id="w">
-        <option>Windscreen replacement</option>
-        <option>Wheel alignment</option>
-        <option>Suspension repairs</option>
-        <option>Accident / bumper repair</option>
-        <option>Steering repairs / SAS relearn</option>
-        <option>Other</option>
-      </select>
-    </div>
-  </div>
-
-  <label style="margin-top:10px;"><b>Findings / notes</b></label>
-  <textarea id="n" placeholder="Example: steering wheel off-centre, SAS shows +4.2°, lane assist warning present..."></textarea>
-
-  <button class="btn" id="send" style="border:none;width:100%;margin-top:10px;cursor:pointer;">Create WhatsApp Customer Message</button>
-
-  <p class="note">This opens WhatsApp with a ready message you can send to the client.</p>
-</div>
-
-</main>
-
-<script>
-document.getElementById("send").addEventListener("click", () => {
-  const vehicle = document.getElementById("v").value || "-";
-  const work = document.getElementById("w").value || "-";
-  const notes = document.getElementById("n").value || "-";
-
-  const msg = encodeURIComponent(
-`Hi 👋
-
-Astro Tyres update on your vehicle:
-
-Vehicle: ${vehicle}
-Work done: ${work}
-
-Findings:
-${notes}
-
-Recommendation:
-We advise ADAS verification/calibration where required to ensure safety systems operate correctly.
-
-Astro Tyres • Trusted Precision`
-  );
-
-  // Opens WhatsApp (to customer number you choose in app chat)
-  window.open(`https://wa.me/?text=${msg}`, "_blank");
-});
+  document.getElementById("genBtn").addEventListener("click", generate);
+  document.getElementById("printBtn").addEventListener("click", () => {
+    generate(); // ensure latest data is in report
+    window.print();
+  });
 </script>
 
 </body>
