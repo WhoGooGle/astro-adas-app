@@ -1,172 +1,301 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADAS Systems & Calibration Guide</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{
+      --bg:#f4f6f8;
+      --card:#ffffff;
+      --text:#111;
+      --muted:rgba(0,0,0,.75);
+      --line:rgba(0,0,0,.10);
+      --shadow:0 4px 14px rgba(0,0,0,.08);
+      --radius:16px;
+      --brand:#111;
+      --accent:#0b5cff;
+    }
 
-<title>ADAS Systems Explained</title>
+    *{box-sizing:border-box}
 
-<style>
+    body{
+      margin:0;
+      font-family:Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
 
-body{
-font-family:Arial;
-margin:0;
-background:#f4f6f8;
-text-align:center;
-}
+    header{
+      background:var(--brand);
+      color:#fff;
+      padding:18px;
+      text-align:center;
+    }
 
-header{
-background:#111;
-color:white;
-padding:15px;
-}
+    header h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
 
-.container{
-max-width:900px;
-margin:auto;
-padding:20px;
-}
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:20px 14px 34px;
+    }
 
-.car{
-position:relative;
-margin-top:20px;
-}
+    .back{
+      display:inline-block;
+      margin-bottom:14px;
+      color:#0b5cff;
+      text-decoration:none;
+      font-weight:bold;
+    }
 
-.car img{
-width:100%;
-max-width:500px;
-}
+    .visual-wrap{
+      position:relative;
+      max-width:920px;
+      margin:0 auto 20px auto;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
 
-.module{
-position:absolute;
-background:#0b5cff;
-color:white;
-padding:8px 12px;
-border-radius:20px;
-font-size:13px;
-cursor:pointer;
-}
+    .visual-wrap img{
+      width:100%;
+      display:block;
+      border-radius:12px;
+    }
 
-.module:hover{
-background:#083c9f;
-}
+    .module{
+      position:absolute;
+      background:#0b5cff;
+      color:#fff;
+      padding:10px 14px;
+      border-radius:22px;
+      font-size:14px;
+      font-weight:bold;
+      cursor:pointer;
+      border:none;
+      box-shadow:0 4px 10px rgba(0,0,0,.18);
+      white-space:nowrap;
+    }
 
-.info{
-margin-top:25px;
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
+    .module:hover{
+      background:#083c9f;
+    }
 
-</style>
+    .info{
+      margin-top:22px;
+      background:#fff;
+      padding:22px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      text-align:left;
+      max-width:920px;
+      margin-left:auto;
+      margin-right:auto;
+    }
 
+    .info h3{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+
+    .info p{
+      margin:0 0 12px;
+      line-height:1.45;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .note{
+      font-size:13px;
+      opacity:.82;
+      margin-top:12px;
+      line-height:1.4;
+      color:var(--muted);
+    }
+
+    ul{
+      margin:8px 0 12px 18px;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .hint{
+      text-align:center;
+      margin-top:10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    /* Module positions */
+    .lane-assist{ top:10%; left:37%; }
+    .front-camera{ top:23%; left:22%; }
+    .front-radar{ top:31%; right:8%; }
+    .blind-spot-left{ top:49%; left:15%; }
+    .blind-spot-right{ top:56%; right:11%; }
+    .rear-camera{ bottom:15%; left:40%; }
+
+    @media(max-width:900px){
+      .module{
+        font-size:12px;
+        padding:8px 10px;
+      }
+    }
+
+    @media(max-width:680px){
+      .lane-assist{ top:8%; left:34%; }
+      .front-camera{ top:22%; left:10%; }
+      .front-radar{ top:30%; right:4%; }
+      .blind-spot-left{ top:48%; left:2%; }
+      .blind-spot-right{ top:56%; right:2%; }
+      .rear-camera{ bottom:12%; left:34%; }
+    }
+  </style>
 </head>
-
 <body>
 
-<header>
+  <header>
+    <h1>ADAS Systems & Calibration Guide</h1>
+  </header>
 
-<h2>ADAS Systems & Calibration Guide</h2>
+  <div class="container">
 
-</header>
+    <a href="index.html" class="back">← Back</a>
 
-<div class="container">
+    <div class="visual-wrap">
+      <img src="adas-visual.png" alt="ADAS vehicle visual">
 
-<div class="car">
+      <button class="module lane-assist" onclick="showInfo('lane')">Lane Assist</button>
+      <button class="module front-camera" onclick="showInfo('camera')">Front Camera</button>
+      <button class="module front-radar" onclick="showInfo('radar')">Front Radar</button>
+      <button class="module blind-spot-left" onclick="showInfo('blindspot')">Blind Spot Radar</button>
+      <button class="module blind-spot-right" onclick="showInfo('blindspot')">Blind Spot Radar</button>
+      <button class="module rear-camera" onclick="showInfo('rear')">Rear Camera</button>
+    </div>
 
-<img src="adas-visual.png">
+    <div class="hint">
+      Click on a module to learn what it does, when calibration is needed, and why calibration matters.
+    </div>
 
-<div class="module" style="top:20%;left:45%" onclick="showInfo('camera')">
-Front Camera
-</div>
+    <div class="info" id="infoBox">
+      <h3>Interactive ADAS Guide</h3>
+      <p>
+        Tap any module above to see what the system does, when calibration is required,
+        and why correct calibration is important for safety.
+      </p>
+    </div>
 
-<div class="module" style="top:45%;left:10%" onclick="showInfo('blindspot')">
-Blind Spot Radar
-</div>
+  </div>
 
-<div class="module" style="top:75%;left:45%" onclick="showInfo('rear')">
-Rear Camera
-</div>
+  <script>
+    function showInfo(system){
+      let text = "";
 
-<div class="module" style="top:45%;left:80%" onclick="showInfo('radar')">
-Front Radar
-</div>
+      if(system === "camera"){
+        text = `
+          <h3>Front Camera</h3>
+          <p><b>What it does:</b><br>
+          Used for Lane Keep Assist, Traffic Sign Recognition and Automatic Emergency Braking.</p>
 
-<div class="module" style="top:10%;left:30%" onclick="showInfo('lane')">
-Lane Assist Camera
-</div>
+          <p><b>Calibration needed after:</b></p>
+          <ul>
+            <li>Windscreen replacement</li>
+            <li>Camera removal or replacement</li>
+            <li>Accident repair affecting the front of the vehicle</li>
+          </ul>
 
-</div>
+          <p><b>Why calibration is needed:</b><br>
+          The camera must be aligned precisely with the vehicle centreline so it can correctly identify lanes,
+          signs and vehicles ahead.</p>
+        `;
+      }
 
-<div class="info" id="infoBox">
+      if(system === "radar"){
+        text = `
+          <h3>Front Radar</h3>
+          <p><b>What it does:</b><br>
+          Used for Adaptive Cruise Control and Automatic Emergency Braking.</p>
 
-Click on a module above to learn about the system and calibration requirements.
+          <p><b>Calibration needed after:</b></p>
+          <ul>
+            <li>Front bumper removal</li>
+            <li>Accident repair</li>
+            <li>Radar sensor replacement</li>
+          </ul>
 
-</div>
+          <p><b>Why calibration is needed:</b><br>
+          If the radar angle is incorrect, the vehicle may misjudge the distance to traffic ahead,
+          causing incorrect warnings or poor braking performance.</p>
+        `;
+      }
 
-</div>
+      if(system === "blindspot"){
+        text = `
+          <h3>Blind Spot Radar</h3>
+          <p><b>What it does:</b><br>
+          Detects vehicles in adjacent lanes and warns the driver when changing lanes.</p>
 
-<script>
+          <p><b>Calibration needed after:</b></p>
+          <ul>
+            <li>Rear bumper repair</li>
+            <li>Blind spot sensor replacement</li>
+            <li>Accident damage at the rear corners</li>
+          </ul>
 
-function showInfo(system){
+          <p><b>Why calibration is needed:</b><br>
+          Incorrect sensor alignment can cause missed detections or false blind spot warnings.</p>
+        `;
+      }
 
-let text="";
+      if(system === "rear"){
+        text = `
+          <h3>Rear Camera</h3>
+          <p><b>What it does:</b><br>
+          Supports reversing visibility, park assist and parking guidance lines.</p>
 
-if(system==="camera"){
-text="<h3>Front Camera</h3>\
-Used for Lane Assist, Traffic Sign Recognition and Emergency Braking.<br><br>\
-<b>Calibration needed after:</b><br>\
-• Windscreen replacement<br>\
-• Accident repair<br>\
-• Camera removal<br><br>\
-<b>Why:</b> The camera must align with the road centerline to correctly detect lanes and vehicles.";
-}
+          <p><b>Calibration needed after:</b></p>
+          <ul>
+            <li>Tailgate replacement</li>
+            <li>Rear camera removal or replacement</li>
+            <li>Rear-end repairs</li>
+          </ul>
 
-if(system==="radar"){
-text="<h3>Front Radar</h3>\
-Used for Adaptive Cruise Control and Automatic Emergency Braking.<br><br>\
-<b>Calibration needed after:</b><br>\
-• Bumper removal<br>\
-• Accident repair<br>\
-• Radar replacement<br><br>\
-<b>Why:</b> Radar angle must be precisely aligned to detect vehicles correctly.";
-}
+          <p><b>Why calibration is needed:</b><br>
+          Calibration ensures the rear image and guidance lines are accurate and correctly positioned.</p>
+        `;
+      }
 
-if(system==="blindspot"){
-text="<h3>Blind Spot Radar</h3>\
-Detects vehicles in adjacent lanes.<br><br>\
-<b>Calibration needed after:</b><br>\
-• Rear bumper repair<br>\
-• Radar replacement<br><br>\
-<b>Why:</b> Incorrect radar alignment can cause missed vehicles or false warnings.";
-}
+      if(system === "lane"){
+        text = `
+          <h3>Lane Assist System</h3>
+          <p><b>What it does:</b><br>
+          Helps keep the vehicle centred in the lane by using camera data and steering references.</p>
 
-if(system==="rear"){
-text="<h3>Rear Camera</h3>\
-Used for reversing camera and parking assistance.<br><br>\
-<b>Calibration needed after:</b><br>\
-• Tailgate replacement<br>\
-• Camera removal<br><br>\
-<b>Why:</b> Calibration ensures accurate parking guidance lines.";
-}
+          <p><b>Calibration needed after:</b></p>
+          <ul>
+            <li>Windscreen replacement</li>
+            <li>Wheel alignment</li>
+            <li>Suspension repairs</li>
+            <li>Steering Angle Sensor (SAS) reset or replacement</li>
+          </ul>
 
-if(system==="lane"){
-text="<h3>Lane Assist System</h3>\
-Keeps the vehicle centered in the lane using the front camera.<br><br>\
-<b>Calibration needed after:</b><br>\
-• Windscreen replacement<br>\
-• Wheel alignment<br>\
-• Suspension repairs<br><br>\
-<b>Why:</b> If the steering geometry changes, the camera must be recalibrated.";
-}
+          <p><b>Why calibration is needed:</b><br>
+          If steering geometry changes or the camera is moved, the lane assist system may no longer
+          operate correctly and safely.</p>
+        `;
+      }
 
-document.getElementById("infoBox").innerHTML=text;
-
-}
-
-</script>
+      document.getElementById("infoBox").innerHTML = text;
+    }
+  </script>
 
 </body>
 </html>
