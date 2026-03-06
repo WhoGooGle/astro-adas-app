@@ -37,7 +37,6 @@
     header h1{
       margin:0;
       font-size:20px;
-      letter-spacing:.2px;
     }
 
     .container{
@@ -56,13 +55,14 @@
 
     .visual-wrap{
       position:relative;
-      max-width:920px;
+      max-width:1060px;
       margin:0 auto 20px auto;
       background:#fff;
       border:1px solid var(--line);
       border-radius:18px;
       padding:18px;
       box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
     .visual-wrap img{
@@ -76,7 +76,7 @@
       background:#0b5cff;
       color:#fff;
       padding:10px 14px;
-      border-radius:22px;
+      border-radius:24px;
       font-size:14px;
       font-weight:bold;
       cursor:pointer;
@@ -97,7 +97,7 @@
       border:1px solid var(--line);
       box-shadow:var(--shadow);
       text-align:left;
-      max-width:920px;
+      max-width:1060px;
       margin-left:auto;
       margin-right:auto;
     }
@@ -114,14 +114,6 @@
       font-size:14px;
     }
 
-    .note{
-      font-size:13px;
-      opacity:.82;
-      margin-top:12px;
-      line-height:1.4;
-      color:var(--muted);
-    }
-
     ul{
       margin:8px 0 12px 18px;
       color:var(--muted);
@@ -135,27 +127,39 @@
       color:var(--muted);
     }
 
-    /* Module positions */
-    .lane-assist{ top:10%; left:37%; }
-    .front-camera{ top:23%; left:22%; }
-    .front-radar{ top:31%; right:8%; }
-    .blind-spot-left{ top:49%; left:15%; }
-    .blind-spot-right{ top:56%; right:11%; }
-    .rear-camera{ bottom:15%; left:40%; }
+    /* CLEAN BUTTON POSITIONS */
+    .lane-assist{ top:14%; left:40%; }
+    .front-camera{ top:31%; left:22%; }
+    .front-radar{ top:33%; right:10%; }
+    .blind-spot-left{ top:54%; left:12%; }
+    .blind-spot-right{ top:57%; right:11%; }
+    .rear-camera{ bottom:14%; left:41%; }
 
     @media(max-width:900px){
       .module{
         font-size:12px;
         padding:8px 10px;
       }
+
+      .lane-assist{ top:13%; left:39%; }
+      .front-camera{ top:30%; left:18%; }
+      .front-radar{ top:32%; right:7%; }
+      .blind-spot-left{ top:53%; left:7%; }
+      .blind-spot-right{ top:56%; right:7%; }
+      .rear-camera{ bottom:13%; left:38%; }
     }
 
     @media(max-width:680px){
-      .lane-assist{ top:8%; left:34%; }
-      .front-camera{ top:22%; left:10%; }
-      .front-radar{ top:30%; right:4%; }
-      .blind-spot-left{ top:48%; left:2%; }
-      .blind-spot-right{ top:56%; right:2%; }
+      .module{
+        font-size:11px;
+        padding:7px 9px;
+      }
+
+      .lane-assist{ top:12%; left:37%; }
+      .front-camera{ top:29%; left:12%; }
+      .front-radar{ top:31%; right:3%; }
+      .blind-spot-left{ top:52%; left:2%; }
+      .blind-spot-right{ top:55%; right:2%; }
       .rear-camera{ bottom:12%; left:34%; }
     }
   </style>
@@ -171,13 +175,13 @@
     <a href="index.html" class="back">← Back</a>
 
     <div class="visual-wrap">
-      <img src="adas-visual.png" alt="ADAS vehicle visual">
+      <img src="adas-visual.png.png" alt="ADAS vehicle visual">
 
       <button class="module lane-assist" onclick="showInfo('lane')">Lane Assist</button>
       <button class="module front-camera" onclick="showInfo('camera')">Front Camera</button>
       <button class="module front-radar" onclick="showInfo('radar')">Front Radar</button>
-      <button class="module blind-spot-left" onclick="showInfo('blindspot')">Blind Spot Radar</button>
-      <button class="module blind-spot-right" onclick="showInfo('blindspot')">Blind Spot Radar</button>
+      <button class="module blind-spot-left" onclick="showInfo('blindspot')">Blind Spot</button>
+      <button class="module blind-spot-right" onclick="showInfo('blindspot')">Blind Spot</button>
       <button class="module rear-camera" onclick="showInfo('rear')">Rear Camera</button>
     </div>
 
