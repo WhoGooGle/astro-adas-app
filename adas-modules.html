@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>ADAS Systems Explained</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f8;
+text-align:center;
+}
+
+header{
+background:#111;
+color:white;
+padding:15px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+.car{
+position:relative;
+margin-top:20px;
+}
+
+.car img{
+width:100%;
+max-width:500px;
+}
+
+.module{
+position:absolute;
+background:#0b5cff;
+color:white;
+padding:8px 12px;
+border-radius:20px;
+font-size:13px;
+cursor:pointer;
+}
+
+.module:hover{
+background:#083c9f;
+}
+
+.info{
+margin-top:25px;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>ADAS Systems & Calibration Guide</h2>
+
+</header>
+
+<div class="container">
+
+<div class="car">
+
+<img src="https://i.imgur.com/Z8aP8lH.png">
+
+<div class="module" style="top:20%;left:45%" onclick="showInfo('camera')">
+Front Camera
+</div>
+
+<div class="module" style="top:45%;left:10%" onclick="showInfo('blindspot')">
+Blind Spot Radar
+</div>
+
+<div class="module" style="top:75%;left:45%" onclick="showInfo('rear')">
+Rear Camera
+</div>
+
+<div class="module" style="top:45%;left:80%" onclick="showInfo('radar')">
+Front Radar
+</div>
+
+<div class="module" style="top:10%;left:30%" onclick="showInfo('lane')">
+Lane Assist Camera
+</div>
+
+</div>
+
+<div class="info" id="infoBox">
+
+Click on a module above to learn about the system and calibration requirements.
+
+</div>
+
+</div>
+
+<script>
+
+function showInfo(system){
+
+let text="";
+
+if(system==="camera"){
+text="<h3>Front Camera</h3>\
+Used for Lane Assist, Traffic Sign Recognition and Emergency Braking.<br><br>\
+<b>Calibration needed after:</b><br>\
+• Windscreen replacement<br>\
+• Accident repair<br>\
+• Camera removal<br><br>\
+<b>Why:</b> The camera must align with the road centerline to correctly detect lanes and vehicles.";
+}
+
+if(system==="radar"){
+text="<h3>Front Radar</h3>\
+Used for Adaptive Cruise Control and Automatic Emergency Braking.<br><br>\
+<b>Calibration needed after:</b><br>\
+• Bumper removal<br>\
+• Accident repair<br>\
+• Radar replacement<br><br>\
+<b>Why:</b> Radar angle must be precisely aligned to detect vehicles correctly.";
+}
+
+if(system==="blindspot"){
+text="<h3>Blind Spot Radar</h3>\
+Detects vehicles in adjacent lanes.<br><br>\
+<b>Calibration needed after:</b><br>\
+• Rear bumper repair<br>\
+• Radar replacement<br><br>\
+<b>Why:</b> Incorrect radar alignment can cause missed vehicles or false warnings.";
+}
+
+if(system==="rear"){
+text="<h3>Rear Camera</h3>\
+Used for reversing camera and parking assistance.<br><br>\
+<b>Calibration needed after:</b><br>\
+• Tailgate replacement<br>\
+• Camera removal<br><br>\
+<b>Why:</b> Calibration ensures accurate parking guidance lines.";
+}
+
+if(system==="lane"){
+text="<h3>Lane Assist System</h3>\
+Keeps the vehicle centered in the lane using the front camera.<br><br>\
+<b>Calibration needed after:</b><br>\
+• Windscreen replacement<br>\
+• Wheel alignment<br>\
+• Suspension repairs<br><br>\
+<b>Why:</b> If the steering geometry changes, the camera must be recalibrated.";
+}
+
+document.getElementById("infoBox").innerHTML=text;
+
+}
+
+</script>
+
+</body>
+</html>
